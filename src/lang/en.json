@@ -1,0 +1,55 @@
+{
+  "connect": {
+    "message": "Welcome in AVIOT_FE",
+    "ip": "IP address",
+    "port": "Port"
+  },
+  "baseGrid": {
+    "noResults": "No results.",
+    "rowsPerPage": "Rows per page",
+    "of": "of",
+    "actions": "Actions"
+  },
+  "navigation": {
+    "devices": "Devices",
+    "about": "About",
+    "disconnect": "Disconnect"
+  },
+  "confirm": {
+    "yes": "Yes",
+    "no": "No"
+  },
+  "toasts": {
+    "updated": "Successfully updated."
+  },
+  "headers": {
+    "devices": {
+      "Device_id": "Device ID",
+      "Mac": "MAC",
+      "Default_Name": "Default name",
+      "Current_Name": "Current name",
+      "Created_at": "Created at",
+      "Updated_at": "Updated at"
+    }
+  },
+  "resource_types": {
+    "device": "device"
+  },
+  "form_labels": {
+    "createResourceType": "Creating new {resourceType}",
+    "updateResourceTypeName": "Modifying {resourceType} {resourceName}"
+  },
+  "buttons": {
+    "connect": "Connect",
+    "filter": "Filter",
+    "create": "Create",
+    "edit": "Edit",
+    "invoicing": "Invoicing",
+    "next": "Next",
+    "back": "Back",
+    "save": "Save",
+    "add": "Add",
+    "cancel": "Cancel",
+    "clear": "Clear"
+  }
+}
