@@ -1,6 +1,10 @@
 <template>
   <v-container>
-    <LocaleSwitch/>
+    <v-row>
+      <v-col cols="12">
+        <LocaleSwitch/>
+      </v-col>
+    </v-row>
     <v-row align="center" justify="center">
       <font color="white" size="5">{{ $t('connect.message') }}</font>
     </v-row>
@@ -31,9 +35,11 @@
       </v-col>
     </v-row>
     <v-row align="center" justify="center">
-      <v-btn large :loading="loading" :disabled="loading" @click="submit">
-        <font color="secondary">{{$t('buttons.connect')}}</font>
-      </v-btn>
+      <v-col cols="12">
+        <v-btn large :loading="loading" :disabled="loading" @click="submit">
+          <font color="secondary">{{$t('buttons.connect')}}</font>
+        </v-btn>
+      </v-col>
     </v-row>
   </v-container>
 </template>
@@ -89,6 +95,7 @@ export default {
           }
         }
       });*/
+
     }
   },
   computed: {

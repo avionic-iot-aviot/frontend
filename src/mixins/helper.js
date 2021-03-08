@@ -11,6 +11,7 @@ export default {
   },
   methods: {
     ...mapMutations("snackbar", ["showMessage","closeMessage"]),
+
     async fetchWithCheck(ip,port) {
       const res=await AxiosService.fetch(ip,port);
       if (res.error) {

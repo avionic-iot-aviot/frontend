@@ -1,7 +1,18 @@
 <template>
   <div>
     <div class="custom-header">
+      <div class="total">
+        {{totalLength}} 
+        <span v-if="totalLength==1">{{$t('baseGrid.found')}}</span>
+        <span v-if="totalLength!=1">{{$t('baseGrid.founds')}}</span>
+      </div>
       <div class="paginator">
+        <v-progress-circular
+          v-if="loading"
+          indeterminate
+          size="32"
+          class="mr-2"
+        ></v-progress-circular>
         {{$t('baseGrid.rowsPerPage')}}:
         <div class="per-page-selector">
           <v-select
@@ -29,12 +40,6 @@
         </v-btn>
       </div>
     </div>
-    <v-progress-linear
-      v-if="loading"
-      color="info"
-      height="5"
-      indeterminate
-    ></v-progress-linear>
     <v-data-table
       ref="dTable"
       :headers="tableHeaders"
@@ -43,11 +48,12 @@
       :options.sync="paginationOpts"
       :must-sort="true"
       hide-default-footer
+      dense
     >
       <template v-slot:body="{ items }">
         <tbody>
           <template v-for="(item, i) in items">
-            <tr :key="i" @click="handleClick(item,item.click)" :class="{'cursor-pointer': 'click_action' in item}">
+            <tr :key="i" @click="handleClick(item,item.click_action)" :class="{'cursor-pointer': 'click_action' in item && !item.click_action.hide}">
               <td
                 v-for="(v, fieldName, j) in item.fields"
                 :key="fieldName"
@@ -57,7 +63,7 @@
                   {{ v.data }}
                 </v-chip>
                 <span v-if="v.dataType == 'text'">
-                  {{ v.data | upperCase }}
+                  {{ v.data }}
                 </span>
                 <span v-if="v.dataType == 'datetime'">
                   {{ v.data | datetime }}
@@ -122,17 +128,10 @@
               </td>
             </tr>
           </template>
+          <v-alert v-if="totalLength==0 && !loading" icon="warning">{{
+            $t("baseGrid.noResults")
+          }}</v-alert>
         </tbody>
-      </template>
-      <template v-slot:no-data>
-        <v-alert :value="true" color="secondary" icon="warning">{{
-          $t('baseGrid.noResults')
-        }}</v-alert>
-      </template>
-      <template v-slot:no-results>
-        <v-alert :value="true" color="secondary" icon="warning">{{
-          $t('baseGrid.noResults')
-        }}</v-alert>
       </template>
     </v-data-table>
   </div>
@@ -199,7 +198,7 @@ export default {
   },
   watch: {
     injectOpts(val) {
-      this.paginationOpts = {...this.paginationOpts, ...val };
+      this.paginationOpts = _.cloneDeep(val);
     },
   },
 
@@ -232,6 +231,7 @@ export default {
     },
     handleClick: function(item,v) {
       if (!v) return;
+      if (v.hide) return;
       if (v.actionType == 'router-link')
         this.goto({ name: v.namedRoot, params: { id: v.namedRootId } });
       else if (v.actionType == 'custom')
@@ -248,8 +248,7 @@ export default {
     }
   },
   created() {
-    this.paginationOpts = {...this.paginationOpts, ...this.$props.injectOpts };
-    this.$emit("onPaginationChanged", this.paginationOpts);
+    this.paginationOpts = _.cloneDeep(this.$props.injectOpts);
   },
   mounted() {
     this.$refs.dTable.$on("update:sort-by", this.handlePagination);
@@ -267,18 +266,20 @@ th {
 }
 .custom-header {
   border-bottom: 1px solid rgba(0, 0, 0, 0.12);
-  height: 58px;
-  padding-left: 8px;
-  padding-right: 8px;
+  padding-left: 16px;
+  padding-right: 16px;
   position: relative;
 }
+.total {
+  width: 50%;
+  text-align: left;
+  display: inline-block;
+}
 .paginator {
-  position: absolute;
-  top: 50%;
-  -ms-transform: translateY(-50%);
-  transform: translateY(-50%);
-  right: 0px;
   font-size: 0.85rem !important;
+  width: 50%;
+  text-align: right;
+  display: inline-block;
 }
 
 .per-page-selector {

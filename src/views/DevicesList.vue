@@ -1,30 +1,36 @@
 <template>
-  <v-card>
-    <BaseGrid
-      :headers="tableData.headers"
-      :items="tableData.items"
-      :totalLength="total"
-      :injectOpts="injectOpts"
-      :loading="loading"
-      :withActions="true"
-      :withEdit="true"
-      :serverItems="false"
-      tableName="devices"
-      @onEdit="handleEdit"
-    ></BaseGrid>
-    <v-dialog
-      v-model="formDialog"
-      content-class="edit-form-dialog"
-    >
-      <DeviceForm
-        v-if="formDialog"
-        @formClose="formDialog=false"
-        @formSucceed="fetch()"
-        :mode="enums.FORM_MODE.UPDATE"
-        :selectedItem="selectedItem"
-      />
-    </v-dialog>
-  </v-card>
+  <div>
+    <div class="my-container">
+      <v-card :class="{ 'center-panel': false }">
+        <BaseGrid
+          tableName="devices"
+          :headers="tableData.headers"
+          :items="tableData.items"
+          :totalLength="total"
+          :injectOpts="paginationOpts"
+          :loading="loading"
+          :withActions="true"
+          :withEdit="true"
+          :serverItems="false"
+          @onEdit="handleEdit"
+        ></BaseGrid>
+        <v-dialog
+          v-model="formDialog"
+          content-class="edit-form-dialog"
+        >
+          <v-card>
+            <DeviceForm
+              v-if="formDialog"
+              :mode="enums.FORM_MODE.UPDATE"
+              :selectedItem="editItem"
+              @formSucceed="fetch()"
+              @formClose="formDialog=false"
+            />
+          </v-card>
+        </v-dialog>
+      </v-card>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -115,28 +121,47 @@ export default {
       }
     },
     handleEdit(item) {
-      this.selectedItem=item;
+      this.editItem=item;
       this.formDialog=true;
     }
   },
 
   created() {
+    this.paginationOpts = {...this.paginationOpts, ...this.mergeOpts };
     this.fetch();
     this.tableData.headers=this.mapHeaders();
   },
+  mounted() {
+    this.updateTimer=setInterval(this.fetch, 10000);
+  },
+  beforeRouteLeave (to, from, next) {
+    clearInterval(this.updateTimer);
+    next();
+  },
+
 
   data() {
     return {
-      injectOpts: {
-        sortBy: ["Device_id"],
+      paginationOpts: {
+        page: 1,
+        itemsPerPage: 25,
         sortDesc: [false],
+        multiSort: false,
+        mustSort: true
       },
       tableData: { headers: [], items: [] },
       items: [],
       total: 0,
       loading: false,
+
       formDialog: false,
-      selectedItem: null
+      editItem: null,
+
+      mergeOpts: {
+        sortBy: ["Device_id"],
+        sortDesc: [false],
+      },
+      updateTimer: null
     };
   }
 };

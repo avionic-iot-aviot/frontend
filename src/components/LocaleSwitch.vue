@@ -36,7 +36,8 @@ export default {
 
 <style scoped lang="sass">
 .active
-  background-color: #555
+  background-color: var(--v-secondary-base)
+  //border-radius: 0.35em
 .langbtn
   margin-right: 8px
   padding: 4px

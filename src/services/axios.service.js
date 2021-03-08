@@ -4,7 +4,7 @@ import axios from "axios";
 const AxiosService = {
   async fetch(ip,port) {
     return new Promise(function(resolve) {
-      axios.get('http://'+ip+":"+port+"/frontend/getAllDevices")
+      axios.get('http://'+ip+":"+port+"/frontend/getAllDevices", {timeout: 5000})
       .then(function (response) {
         resolve([response.data,response.data.length]);
       })

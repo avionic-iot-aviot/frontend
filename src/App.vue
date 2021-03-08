@@ -8,7 +8,7 @@
       v-if="connected"
     >
       <div class="d-flex align-center">
-        AVIOT_FE
+        <h3 class="app-title">AVIOT_FE</h3>
       </div>
 
       <v-spacer></v-spacer>
@@ -17,9 +17,9 @@
     </v-app-bar>
 
     <v-main>
-      <v-container fluid class="main-container">
+      <div class="main-container" fluid>
         <router-view/>
-      </v-container>
+      </div>
       <SnackBar ref="snack" />
     </v-main>
   </v-app>
@@ -55,3 +55,15 @@ export default {
   },
 };
 </script>
+
+<style>
+html {
+  overflow-y: hidden !important;
+}
+.v-main {
+  height: 0px;
+}
+.v-main__wrap {
+  overflow-y: scroll;
+}
+</style>

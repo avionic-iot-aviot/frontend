@@ -1,4 +1,8 @@
 {
+  "form_labels": {
+    "createResource": "Creating new {resourceType}",
+    "updateResource": "Modifying {resourceType} {resourceName}"
+  },
   "connect": {
     "message": "Welcome in AVIOT_FE",
     "ip": "IP address",
@@ -8,7 +12,9 @@
     "noResults": "No results.",
     "rowsPerPage": "Rows per page",
     "of": "of",
-    "actions": "Actions"
+    "actions": "Actions",
+    "found": "element fount",
+    "founds": "elements fount"
   },
   "navigation": {
     "devices": "Devices",
@@ -34,10 +40,6 @@
   },
   "resource_types": {
     "device": "device"
-  },
-  "form_labels": {
-    "createResourceType": "Creating new {resourceType}",
-    "updateResourceTypeName": "Modifying {resourceType} {resourceName}"
   },
   "buttons": {
     "connect": "Connect",

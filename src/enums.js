@@ -4,6 +4,8 @@ export default {
     RIGHT: "keyboard_arrow_right",
     EDIT: "edit",
     DELETE: "delete",
+    ADD: "add_circle",
+    BACK: "arrow_back",
   },
   TOAST_TYPE: {
     SUCCESS: "success",

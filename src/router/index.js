@@ -43,7 +43,7 @@ router.beforeEach(async (to, from, next) => {
 
   router.app.$ability(defineAbilitiesFor());
 
-  const publicPages = ["Connect", "Home", "About"];
+  const publicPages = ["Connect", "Home", "About", "Restricted"];
   const connRequired = !publicPages.includes(to.name);
 
   if (!connRequired) {

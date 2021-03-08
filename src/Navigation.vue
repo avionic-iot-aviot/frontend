@@ -1,12 +1,14 @@
 <template>
   <div>
-    <div v-for="item in navigationItems" :key="item.route" :class="{
-      navigationItem: true,
-      navigationItemSelected: isActive(item.name),
-    }">
-      <div class="nav-button" v-if="'name' in item" @click="goTo(item.name)">{{item.text}}</div>
-      <div class="nav-button" v-if="'callback' in item" @click="item.callback(item)">{{item.text}}</div>
-    </div>
+    <template v-for="item in navigationItems">
+      <div :key="item.route" v-if="!('enabled' in item) || item.enabled" :class="{
+        navigationItem: true,
+        navigationItemSelected: isActive(item.name),
+      }">
+        <div class="nav-button" v-if="'name' in item" @click="goTo(item.name)">{{item.text}}</div>
+        <div class="nav-button" v-if="'callback' in item" @click="item.callback(item)">{{item.text}}</div>
+      </div>
+    </template>
   </div>
 </template>
 
@@ -66,17 +68,15 @@ export default {
 };
 </script>
 
-<style scoped>
-.navigationItem {
-  cursor: pointer;
-  background-color: #000;
-  display: inline-block;
-  margin-right: 8px;
-}
-.navigationItemSelected {
-  background-color: #555;
-}
-.nav-button {
-  padding: 4px;
-}
+<style scoped lang="sass">
+.navigationItem
+  cursor: pointer
+  display: inline-block
+  margin-right: 8px
+  line-height: 16px
+.navigationItemSelected
+  background-color: var(--v-secondary-base)
+  //border-radius: 0.35em
+.nav-button
+  padding: 10px
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <v-card>
+  <div>
     <v-card-title class="form-title">{{
       this.formTitle | capitalize
     }}</v-card-title>
@@ -24,7 +24,7 @@
         :disabled="invalid"
       />
     </ValidationObserver>
-  </v-card>
+  </div>
 </template>
 
 <script>
@@ -106,12 +106,12 @@ export default {
       var title = "";
       switch (this.mode) {
         case enums.FORM_MODE.CREATE:
-          title = this.$t("form_labels.createResourceType", {
+          title = this.$t("form_labels.createResource", {
             resourceType: this.resourceType
           });
           break;
         case enums.FORM_MODE.UPDATE:
-          title = this.$t("form_labels.updateResourceTypeName", {
+          title = this.$t("form_labels.updateResource", {
             resourceType: this.resourceType,
             resourceName: this.form.Device_id || "-"
           });
@@ -130,29 +130,5 @@ export default {
       this.setForm(this.$props.selectedItem);
     }
   },
-
-  mount() {
-    
-  }
 };
 </script>
-
-<style scoped>
-.has-error {
-  color: red;
-}
-.required label:before {
-  color: #e32;
-  content: "* ";
-  display: inline;
-}
-.summary-font {
-  font-size: small;
-  line-height: 24px;
-}
-.summary-font-bold {
-  font-size: small;
-  font-weight: bold;
-  line-height: 24px;
-}
-</style>

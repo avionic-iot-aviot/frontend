@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container fluid>
     <v-row>
       <v-col cols="6">
         <v-btn
@@ -13,10 +13,10 @@
         </v-btn>
       </v-col>
       <v-col cols="6" class="text-right">
-        <v-progress-circular indeterminate class="mr-3" v-if="createLoading" />
+        <v-progress-circular indeterminate class="ml-3" v-if="createLoading" />
         <v-btn
           v-if="multiForm && multiLayout > 0"
-          class="mr-3"
+          class="ml-3"
           @click="onBack()"
           color="primary"
           :disabled="createLoading"
@@ -24,7 +24,7 @@
         >
         <v-btn
           v-if="multiForm && multiLayout != 2"
-          class="mr-3"
+          class="ml-3"
           @click="onNext()"
           color="primary"
           :disabled="disabled || createLoading"
@@ -32,13 +32,13 @@
         >
         <v-btn
           v-if="!multiForm || multiLayout == 2"
-          class="mr-3"
+          class="ml-3"
           color="primary"
           @click="onSave()"
           :disabled="disabled || createLoading"
           >{{ $t("buttons.save") }}</v-btn
         >
-        <v-btn :disabled="createLoading" text @click="onCancel()">{{
+        <v-btn class="ml-3" :disabled="createLoading" text @click="onCancel()">{{
           $t("buttons.cancel")
         }}</v-btn>
       </v-col>
