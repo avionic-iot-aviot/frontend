@@ -1,6 +1,6 @@
-# mikromanager-fe
+# aviot-fe
 
-Frontend per il mikromanager
+Frontend per AVIOT
 
 ## Project setup
 ```

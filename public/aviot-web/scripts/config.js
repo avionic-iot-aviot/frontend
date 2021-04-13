@@ -1,0 +1,1 @@
+var JANUS_SERVER_ENDPOINT = 'http://13.48.71.129:32542/janus'
