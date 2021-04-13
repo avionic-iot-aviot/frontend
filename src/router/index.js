@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Connect from '../views/Connect.vue'
 import DevicesList from '../views/DevicesList.vue'
-import About from '../views/About.vue'
+import VideoRoom from '../views/VideoRoom.vue'
 import defineAbilitiesFor from '@/abilities'
 import store from "@/store";
 import i18n from "@/i18n";
@@ -21,9 +21,9 @@ const routes = [
     component: DevicesList
   },
   {
-    path: '/about',
-    name: 'About',
-    component: About
+    path: '/videoroom/:copter_id',
+    name: 'VideoRoom',
+    component: VideoRoom
   }
 ]
 
@@ -43,7 +43,7 @@ router.beforeEach(async (to, from, next) => {
 
   router.app.$ability(defineAbilitiesFor());
 
-  const publicPages = ["Connect", "Home", "About", "Restricted"];
+  const publicPages = ["Connect", "Home"];
   const connRequired = !publicPages.includes(to.name);
 
   if (!connRequired) {

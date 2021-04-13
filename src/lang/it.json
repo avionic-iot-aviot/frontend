@@ -18,7 +18,8 @@
   },
   "navigation": {
     "devices": "Dispositivi",
-    "about": "Info",
+    "videoroom": "Video Room",
+    "janus": "Janus",
     "disconnect": "Disconnetti"
   },
   "confirm": {

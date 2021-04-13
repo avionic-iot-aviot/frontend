@@ -18,7 +18,8 @@
   },
   "navigation": {
     "devices": "Devices",
-    "about": "About",
+    "videoroom": "Video Room",
+    "janus": "Janus",
     "disconnect": "Disconnect"
   },
   "confirm": {

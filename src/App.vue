@@ -64,6 +64,7 @@ html {
   height: 0px;
 }
 .v-main__wrap {
-  overflow-y: scroll;
+  position: relative;
+  overflow-y: auto;
 }
 </style>

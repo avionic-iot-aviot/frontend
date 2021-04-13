@@ -5,7 +5,7 @@
         navigationItem: true,
         navigationItemSelected: isActive(item.name),
       }">
-        <div class="nav-button" v-if="'name' in item" @click="goTo(item.name)">{{item.text}}</div>
+        <div class="nav-button" v-if="'name' in item" @click="goTo(item)">{{item.text}}</div>
         <div class="nav-button" v-if="'callback' in item" @click="item.callback(item)">{{item.text}}</div>
       </div>
     </template>
@@ -27,8 +27,8 @@ export default {
       if (!name) return false;
       return this.mapping[this.$route.name] == name;
     },
-    goTo(name) {
-      this.$router.push({ name }).catch(()=>{});
+    goTo(item) {
+      this.$router.push({ name: item.name, params: item.params }).catch(()=>{});
     }
   },
 
@@ -42,16 +42,17 @@ export default {
     return {
       mapping: {
         Devices: "Devices",
-        About: "About",
+        VideoRoom: "VideoRoom",
       },
       navigationItems: [
         {
           name: "Devices",
-          text: this.$t('navigation.devices')
+          text: this.$t('navigation.devices'),
         },
         {
-          name: "About",
-          text: this.$t('navigation.about')
+          name: "VideoRoom",
+          text: this.$t('navigation.videoroom'),
+          params: {copter_id: "mavros"}
         },
         {
           callback: async () => {
