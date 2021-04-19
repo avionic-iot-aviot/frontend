@@ -101,14 +101,14 @@ export default {
 
           },
         };*/
-        /*item.actions = [
+        item.actions = [
           {
             actionType: "router-link",
-            namedRoot: "userDetails",
-            namedRootId: item.id,
+            namedRoot: "VideoRoom",
+            namedRootParams: {copter_id: item.Mac.replace(/:/g,"")},
             icon: "gps_fixed",
           }
-        ];*/
+        ];
         return item;
       });
       return tableItems;

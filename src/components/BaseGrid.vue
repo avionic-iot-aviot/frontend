@@ -87,7 +87,7 @@
                     :disabled="v.disable"
                     icon
                     color="primary"
-                    @click.stop="goto({ name: v.namedRoot, params: { id: v.namedRootId } })"
+                    @click.stop="goto({ name: v.namedRoot, params: v.namedRootParams })"
                   >
                     <span v-if="v.icon_text">{{ v.icon_text }}</span>
                     <v-icon v-if="!v.icon_text" dark>{{ v.icon }}</v-icon>
@@ -233,11 +233,13 @@ export default {
       if (!v) return;
       if (v.hide) return;
       if (v.actionType == 'router-link')
-        this.goto({ name: v.namedRoot, params: { id: v.namedRootId } });
+        this.goto({ name: v.namedRoot, params: v.namedRootParams });
       else if (v.actionType == 'custom')
         v.callback(item);
     },
     goto: function(dst) {
+      console.log("dst");
+      console.log(dst);
       this.$router.push(dst).catch(()=>{});
     },
     onEdit: function(item) {
