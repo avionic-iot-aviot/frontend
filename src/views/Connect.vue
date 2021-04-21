@@ -50,14 +50,15 @@ import { mapMutations } from "vuex";
 import { TokenService } from "@/services/token.service";
 import LocaleSwitch from "@/components/LocaleSwitch";
 import store from "@/store";
+import config from '../../config'
 
 export default {
   components: {
     LocaleSwitch
   },
   data: () => ({
-    ip: "192.168.1.12",
-    port: "4001",
+    ip: config.dbapp.host,
+    port: config.dbapp.port,
     loading: false,
   }),
   methods: {

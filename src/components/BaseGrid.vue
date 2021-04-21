@@ -238,8 +238,6 @@ export default {
         v.callback(item);
     },
     goto: function(dst) {
-      console.log("dst");
-      console.log(dst);
       this.$router.push(dst).catch(()=>{});
     },
     onEdit: function(item) {

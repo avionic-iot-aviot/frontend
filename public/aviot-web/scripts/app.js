@@ -12,8 +12,7 @@ var latitude, longitude, altitude
  */
 
 
-
-let mavros = new AviotCopter(getQueryVariable('copter_id'), '', 'http://13.48.71.129:31015')
+let mavros = new AviotCopter(getQueryVariable('copter_id'), '', WSS_ENDPOINT)
 
 mavros.on('connect', function(){
   console.log('connected')
