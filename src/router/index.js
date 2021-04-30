@@ -37,10 +37,13 @@ router.beforeEach(async (to, from, next) => {
   if (!localStorage.locale) localStorage.locale = "en";
   i18n.locale = localStorage.locale;
 
-  const connected = localStorage.getItem("ip");
+  const connected = localStorage.getItem("is_connected");
 
-  if (connected) store.commit("status/setConnected", true);
-
+  if (connected)
+    store.commit("status/setConnected", true);
+  else
+    store.commit("status/setConnected", false);
+  
   router.app.$ability(defineAbilitiesFor());
 
   const publicPages = ["Connect", "Home"];

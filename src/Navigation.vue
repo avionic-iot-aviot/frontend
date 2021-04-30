@@ -16,7 +16,6 @@
 import enums from "@/enums";
 import { TokenService } from "@/services/token.service";
 import { mapMutations } from "vuex";
-import store from "@/store";
 
 export default {
   name: 'Navigation',
@@ -56,9 +55,7 @@ export default {
         },
         {
           callback: async () => {
-            TokenService.removeToken("ip");
-            TokenService.removeToken("port");
-            store.commit("status/setConnected", false);
+            TokenService.removeToken("is_connected");
             this.$router.push({ name: "Connect" }).catch(()=>{});
           },
           text: this.$t('navigation.disconnect')

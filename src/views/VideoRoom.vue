@@ -1,21 +1,18 @@
 
 <template>
   <iframe frameBorder="0" :src="'../aviot-web/index.html?copter_id='+$route.params.copter_id+
-    '&janus_host='+config.janus.host+
-    '&janus_port='+config.janus.port+
-    '&wss_host='+config.wss.host+
-    '&wss_port='+config.wss.port" >
+    '&janus_url='+janus_url+
+    '&wss_url='+wss_url">
   </iframe>
 </template>
 
 <script>
-import config from '../../config'
-
 export default {
   name: 'VideoRoom',
   data() {
     return {
-      config
+      janus_url: localStorage.janus_url,
+      wss_url: localStorage.wss_url
     };
   }
 }

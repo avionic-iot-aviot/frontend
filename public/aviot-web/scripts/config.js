@@ -1,5 +1,5 @@
-var JANUS_SERVER_ENDPOINT="http://"+getQueryVariable('janus_host')+":"+getQueryVariable('janus_port')
-var WSS_ENDPOINT="http://"+getQueryVariable('wss_host')+":"+getQueryVariable('wss_port')
+var JANUS_SERVER_ENDPOINT=getQueryVariable('janus_url');
+var WSS_ENDPOINT=getQueryVariable('wss_url');
 
 console.log(JANUS_SERVER_ENDPOINT);
 console.log(WSS_ENDPOINT);
