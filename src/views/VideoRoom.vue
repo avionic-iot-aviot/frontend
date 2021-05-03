@@ -11,8 +11,8 @@ export default {
   name: 'VideoRoom',
   data() {
     return {
-      janus_url: localStorage.janus_url,
-      wss_url: localStorage.wss_url
+      janus_url: this.$janus_url,
+      wss_url: this.$wss_url
     };
   }
 }

@@ -75,7 +75,7 @@ export default {
   
   methods: {
     async onSubmit() {
-      let res=await this.updateWithCheck(localStorage.dbapp_url,this.form.Current_Name,this.form.Mac);
+      let res=await this.updateWithCheck(this.$dbapp_url,this.form.Current_Name,this.form.Mac);
       if (res) {
         this.$emit("formSucceed");
         this.$emit("formClose");

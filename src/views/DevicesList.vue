@@ -114,7 +114,7 @@ export default {
       return tableItems;
     },
     async fetch() {
-      let res=await this.fetchWithCheck(localStorage.dbapp_url);
+      let res=await this.fetchWithCheck(this.$dbapp_url);
       if (res) {
         [this.items,this.total]=res;
         this.tableData.items=this.mapItems();
