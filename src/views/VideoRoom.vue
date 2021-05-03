@@ -1,6 +1,6 @@
 
 <template>
-  <iframe frameBorder="0" :src="'../aviot-web/index.html?copter_id='+$route.params.copter_id+
+  <iframe frameBorder="0" :src="'./aviot-web/index.html?copter_id='+$route.params.copter_id+
     '&janus_url='+janus_url+
     '&wss_url='+wss_url">
   </iframe>
