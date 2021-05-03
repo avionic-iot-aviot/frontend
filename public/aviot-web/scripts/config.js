@@ -1,4 +1,4 @@
-var JANUS_SERVER_ENDPOINT=getQueryVariable('janus_url');
+var JANUS_SERVER_ENDPOINT=getQueryVariable('janus_url')+"/janus";
 var WSS_ENDPOINT=getQueryVariable('wss_url');
 
 console.log(JANUS_SERVER_ENDPOINT);
