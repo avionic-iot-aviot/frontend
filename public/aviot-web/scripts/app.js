@@ -13,7 +13,7 @@ var muted = false
 
 
 
-let mavros = new AviotCopter('mavros', '', WSS_ENDPOINT)
+let mavros = new AviotCopter(getQueryVariable('copter_id'), '', WSS_ENDPOINT)
 
 mavros.on('connect', function(){
   console.log('connected')
