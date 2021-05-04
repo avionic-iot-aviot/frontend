@@ -4,6 +4,7 @@ import DevicesList from '../views/DevicesList.vue'
 import VideoRoom from '../views/VideoRoom.vue'
 import defineAbilitiesFor from '@/abilities'
 import i18n from "@/i18n";
+import config from "@/config.js"
 
 Vue.use(VueRouter)
 
@@ -37,7 +38,7 @@ router.beforeEach(async (to, from, next) => {
 
   // const connected = localStorage.getItem("is_connected");
 
-  const tenantId=window.location.href.split("/")[2].split(".")[0];
+  const tenantId=config.tenantId ? config.tenantId : window.location.href.split("/")[2].split(".")[0];
   Vue.prototype.$dbapp_url="http://"+tenantId+".aviot.it/dbapp";
   Vue.prototype.$wss_url="http://"+tenantId+".aviot.it";
   Vue.prototype.$janus_url="http://"+tenantId+".aviot.it/janus";

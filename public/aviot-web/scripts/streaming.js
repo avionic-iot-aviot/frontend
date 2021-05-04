@@ -79,7 +79,7 @@ function onAttachMessage(msg, jsep){
       console.log("EVENT message", msg)
     }
   } else if(msg["error"]) {
-    alert("B "+msg["error"]);
+    alert(msg["error"]);
     //stopStream();
     return;
   }
