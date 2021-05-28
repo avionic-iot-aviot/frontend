@@ -6,14 +6,14 @@
     <ValidationObserver v-slot="{ invalid }">
       <v-card-text>
         <v-text-field
-          :label="$t('headers.devices.Mac')"
-          v-model="form.Mac"
+          :label="$t('headers.devices.mac_address')"
+          v-model="form.mac_address"
           :disabled="true"
         ></v-text-field>
-        <ValidationProvider :name="$t('headers.devices.Current_Name')" immediate rules="required" v-slot="{ errors }">
+        <ValidationProvider :name="$t('headers.devices.current_name')" immediate rules="required" v-slot="{ errors }">
           <v-text-field
-            :label="$t('headers.devices.Current_Name')"
-            v-model="form.Current_Name"
+            :label="$t('headers.devices.current_name')"
+            v-model="form.current_name"
           ></v-text-field>
           <span class="form-error">{{ errors[0] }}</span>
         </ValidationProvider>
@@ -56,9 +56,9 @@ export default {
       resourceType: this.$t("resource_types.device"),
       formDialog: true,
       form: {
-        Device_id: "",
-        Mac: "",
-        Current_Name: ""
+        device_id: "",
+        mac_address: "",
+        current_name: ""
       },
     };
   },
@@ -75,7 +75,7 @@ export default {
   
   methods: {
     async onSubmit() {
-      let res=await this.updateWithCheck(this.$dbapp_url,this.form.Current_Name,this.form.Mac);
+      let res=await this.updateWithCheck(this.$dbapp_url,this.form.current_name,this.form.mac_address);
       if (res) {
         this.$emit("formSucceed");
         this.$emit("formClose");
@@ -87,13 +87,13 @@ export default {
     },
     setForm(row = null) {
       if (row && !_.isEmpty(row)) {
-        this.form.Device_id = row.Device_id;
-        this.form.Mac = row.Mac;
-        this.form.Current_Name = row.Current_Name;
+        this.form.device_id = row.device_id;
+        this.form.mac_address = row.mac_address;
+        this.form.current_name = row.current_name;
       } else if (row == null) {
-        this.form.Device_id = "";
-        this.form.Mac = "";
-        this.form.Current_Name = "";
+        this.form.device_id = "";
+        this.form.mac_address = "";
+        this.form.current_name = "";
       }
     },
   },
@@ -113,7 +113,7 @@ export default {
         case enums.FORM_MODE.UPDATE:
           title = this.$t("form_labels.updateResource", {
             resourceType: this.resourceType,
-            resourceName: this.form.Device_id || "-"
+            resourceName: this.form.device_id || "-"
           });
           break;
         default:

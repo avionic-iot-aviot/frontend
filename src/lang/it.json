@@ -31,12 +31,13 @@
   },
   "headers": {
     "devices": {
-      "Device_id": "ID dispositivo",
-      "Mac": "MAC",
-      "Default_Name": "Nome di default",
-      "Current_Name": "Nome corrente",
-      "Created_at": "Creato il",
-      "Updated_at": "Aggiornato il"
+      "device_id": "ID dispositivo",
+      "mac_address": "MAC",
+      "ip": "IP",
+      "default_name": "Nome di default",
+      "current_name": "Nome corrente",
+      "created_at": "Creato il",
+      "updated_at": "Aggiornato il"
     }
   },
   "resource_types": {

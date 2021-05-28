@@ -198,7 +198,7 @@ export default {
   },
   watch: {
     injectOpts(val) {
-      this.paginationOpts = _.cloneDeep(val);
+      this.paginationOpts = {...this.paginationOpts, ..._.cloneDeep(val)};
     },
   },
 
@@ -248,7 +248,7 @@ export default {
     }
   },
   created() {
-    this.paginationOpts = _.cloneDeep(this.$props.injectOpts);
+    this.paginationOpts = {...this.paginationOpts, ..._.cloneDeep(this.$props.injectOpts)};
   },
   mounted() {
     this.$refs.dTable.$on("update:sort-by", this.handlePagination);

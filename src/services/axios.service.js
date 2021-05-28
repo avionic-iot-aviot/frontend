@@ -6,7 +6,7 @@ const AxiosService = {
     return new Promise(function(resolve) {
       axios.get(url+"/frontend/getAllDevices", {timeout: 5000})
       .then(function (response) {
-        resolve([response.data,response.data.length]);
+        resolve(response.data);
       })
       .catch(function (error) {
         console.log("fetch error: ",error);
@@ -19,8 +19,8 @@ const AxiosService = {
       let payload={
         params: {
           device: {
-            NewHostName: name,
-            Mac: mac
+            current_name: name,
+            mac_address: mac
           }
         }
       };
