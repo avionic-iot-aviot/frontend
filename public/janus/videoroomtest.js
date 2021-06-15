@@ -51,7 +51,7 @@ else
 	server = "https://" + window.location.hostname + ":8089/janus";
 
 // ANDS modified
-server="http://13.48.71.129:32542/janus";
+server="http://13.51.47.162:31945/janus";
 
 var janus = null;
 var sfutest = null;
