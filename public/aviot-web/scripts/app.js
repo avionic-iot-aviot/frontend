@@ -45,6 +45,7 @@ function onGlobalPosUpdate(msg){
   longitude = msg.longitude
   $('#lat').html(latitude)
   $('#lng').html(longitude)
+  updateDronePos(latitude,longitude,getQueryVariable('copter_id'),true)
 }
 
 function onRelAltUpdate(msg){
