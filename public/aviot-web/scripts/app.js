@@ -99,6 +99,9 @@ function takeoff() {
   console.log('taking off');
   mavros.takeoff(latitude, longitude, Number($('#altitude').val()))
 }
+function rttTest() {
+  mavros.rttTest()
+}
 
 function land(){
   mavros.land(latitude, longitude, 0)
@@ -138,6 +141,7 @@ function stopVideoRoom(){
 
 $('#armThrottle').click(armThrottle)
 $('#takeoff').click(takeoff)
+$('#rtt-test').click(rttTest)
 $('#land').click(land)
 
 

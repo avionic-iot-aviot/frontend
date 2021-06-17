@@ -10,6 +10,8 @@ class AviotCopter {
       this.socket.on('connect', this._onConnect)
       this.socket.on('error', this._onError)
 
+      this.rtt_sum=0
+      this.rtt_count=0
     }
 
     getCopterId(){
@@ -46,6 +48,21 @@ class AviotCopter {
       this.socket.on(`/${this.copterId}/global_position/rel_alt`, this.__emit('relative_altitude'))
       this.socket.on(`/${this.copterId}/streaming`, this.__emit('streaming'))
       this.socket.on(`/${this.copterId}/video_room`, this.__emit('video_room'))
+      this.socket.on(`/${this.copterId}/rtt_resp`, (arg) => {
+        this.rtt_ts2=Date.now()
+        console.log('rtt_resp: '+this.rtt_ts2);
+
+        this.rtt_sum+=this.rtt_ts2-this.rtt_ts1;
+        this.rtt_count++;
+
+        if (this.rtt_count<10)
+          rttTest();
+        else {
+          console.log('avg: '+(this.rtt_sum/this.rtt_count));
+          this.rtt_sum=0
+          this.rtt_count=0
+        }
+      });
       this._emit('connect', {status: 'connected'})
     }
     armThrottle(){
@@ -68,6 +85,11 @@ class AviotCopter {
     stopStreaming(){
       console.log("Sending stop streaming")
       this.socket.emit('video_stream', {copterId: this.copterId, action: 'stop'})
+    }
+    rttTest(){
+      this.rtt_ts1=Date.now()
+      console.log('rtt_test: '+this.rtt_ts1);
+      this.socket.emit('rtt_test', {copterId: this.copterId})
     }
     startVideoRoom(){
       console.log("Sending start video room")
