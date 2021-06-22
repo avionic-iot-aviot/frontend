@@ -140,10 +140,12 @@
   <script src="scripts/streaming.js"></script>
   <script src="scripts/videoroom.js"></script>
   <script src="scripts/map.js"></script>
-  <script
-  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC68nUoeULDQc5WbvtAbybcAbBdjagK8CQ&callback=initMap&libraries=&v=weekly"
-  async
-  ></script>
+  <script>
+    const script = document.createElement('script');
+    script.async = true;
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${getQueryVariable('maps_api_key')}&callback=initMap&libraries=&v=weekly`;
+    document.head.appendChild(script);
+  </script>
   <script src="scripts/app.js"></script>
   
   </body>
