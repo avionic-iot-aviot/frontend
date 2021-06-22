@@ -100,9 +100,9 @@ class AviotCopter {
       this.socket.emit('video_room', {copterId: this.copterId, action: 'stop'})
     }
 
-    setFence(mode, points){
+    setFence(data){
       console.log("Sending set fence event")
-      this.socket.emit('fence', { copterId: this.copterId, action: 'set', data: { mode, points } })
+      this.socket.emit('fence', { copterId: this.copterId, action: 'set', data })
     }
     delFence(fenceId){
       console.log("Sending delete fence event")

@@ -94,6 +94,8 @@ function removePolyline(index){
   console.log(removed)
   removed[0].area.setMap(null)
   updateTable();
+  mavros.delFence(index)
+
 }
 function updateTable(){
 
@@ -120,6 +122,12 @@ function addArea(){
     polygon: polygon,
     isAllowed: isAllowed()
   })
+  let payload = {
+    mode: isAllowed() ? 'ALLOW' : 'DENY',
+    points: polygon.map(m => ({x: m.position.lat(), y: m.position.lng(), z: 0 }))
+  }
+  console.log("Adding area", payload)
+  mavros.setFence(payload)
   area = undefined
   polygon = []
   updateTable()
