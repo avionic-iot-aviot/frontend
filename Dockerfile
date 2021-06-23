@@ -7,6 +7,8 @@ WORKDIR /root
 
 COPY start.sh .
 
+#RUN mkdir frontend
+#COPY . ./frontend/
+
 EXPOSE 8080
-CMD [ "sleep", "infinity" ]
-#CMD [ "start.sh" ]
+CMD [ "./start.sh" ]
