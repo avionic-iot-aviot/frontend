@@ -8,5 +8,8 @@ module.exports = {
         prependData: `@import "~@/styles/main.sass"`
       }
     }
-  }
+  },
+  publicPath: process.env.NODE_ENV === 'production'
+    ? '/frontend/'
+    : '/'
 }

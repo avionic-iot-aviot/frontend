@@ -18,15 +18,22 @@
       <v-col cols="6">
         <v-form>
           <v-text-field
-            :label="$t('connect.ip')"
-            v-model="ip"
+            label="DBAPP URL"
+            v-model="dbapp_url"
             required
             dark
             @keyup.enter.native="submit"
           ></v-text-field>
           <v-text-field
-            :label="$t('connect.port')"
-            v-model="port"
+            label="WSS URL"
+            v-model="wss_url"
+            required
+            dark
+            @keyup.enter.native="submit"
+          ></v-text-field>
+          <v-text-field
+            label="JANUS URL"
+            v-model="janus_url"
             required
             dark
             @keyup.enter.native="submit"
@@ -49,15 +56,15 @@ import enums from "@/enums";
 import { mapMutations } from "vuex";
 import { TokenService } from "@/services/token.service";
 import LocaleSwitch from "@/components/LocaleSwitch";
-import store from "@/store";
 
 export default {
   components: {
     LocaleSwitch
   },
   data: () => ({
-    ip: "192.168.1.12",
-    port: "4001",
+    dbapp_url: "",
+    wss_url: "",
+    janus_url: "",
     loading: false,
   }),
   methods: {
@@ -76,9 +83,10 @@ export default {
       if (!found) this.$router.push({ name: "default" }).catch(()=>{});
     },
     async submit() {
-      TokenService.saveToken("ip",this.ip);
-      TokenService.saveToken("port",this.port);
-      store.commit("status/setConnected", true);
+      TokenService.saveToken("dbapp_url",this.dbapp_url);
+      TokenService.saveToken("wss_url",this.wss_url);
+      TokenService.saveToken("janus_url",this.janus_url);
+      TokenService.saveToken("is_connected",true);
       this.goToNext();
       /*this.showMessage({
         context: enums.TOAST_TYPE.ERROR,

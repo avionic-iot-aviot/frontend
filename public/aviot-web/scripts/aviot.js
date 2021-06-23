@@ -10,6 +10,8 @@ class AviotCopter {
       this.socket.on('connect', this._onConnect)
       this.socket.on('error', this._onError)
 
+      this.rtt_sum=0
+      this.rtt_count=0
     }
 
     getCopterId(){
@@ -31,6 +33,7 @@ class AviotCopter {
     __emit(event){
       return function(data) {
         this._emit(event, data)
+        console.log(data)
       }.bind(this)
     }
     _onError(error){
@@ -45,6 +48,21 @@ class AviotCopter {
       this.socket.on(`/${this.copterId}/global_position/rel_alt`, this.__emit('relative_altitude'))
       this.socket.on(`/${this.copterId}/streaming`, this.__emit('streaming'))
       this.socket.on(`/${this.copterId}/video_room`, this.__emit('video_room'))
+      this.socket.on(`/${this.copterId}/rtt_resp`, (arg) => {
+        this.rtt_ts2=Date.now()
+        console.log('rtt_resp: '+this.rtt_ts2);
+
+        this.rtt_sum+=this.rtt_ts2-this.rtt_ts1;
+        this.rtt_count++;
+
+        if (this.rtt_count<10)
+          rttTest();
+        else {
+          console.log('avg: '+(this.rtt_sum/this.rtt_count));
+          this.rtt_sum=0
+          this.rtt_count=0
+        }
+      });
       this._emit('connect', {status: 'connected'})
     }
     armThrottle(){
@@ -56,7 +74,6 @@ class AviotCopter {
     }
     land(lat, lng, alt){
       this.socket.emit('land', {copterId: this.copterId, latitude: lat, longitude: lng, altitude: alt} )
-
     }
     cmdVel(linear={x:0, y:0, z:0}, angular={x:0, y:0, z:0}){
       this.socket.emit('cmd_vel', {copterId: this.copterId, linear: linear, angular: angular})
@@ -69,6 +86,11 @@ class AviotCopter {
       console.log("Sending stop streaming")
       this.socket.emit('video_stream', {copterId: this.copterId, action: 'stop'})
     }
+    rttTest(){
+      this.rtt_ts1=Date.now()
+      console.log('rtt_test: '+this.rtt_ts1);
+      this.socket.emit('rtt_test', {copterId: this.copterId})
+    }
     startVideoRoom(){
       console.log("Sending start video room")
       this.socket.emit('video_room', {copterId: this.copterId, action: 'start'})
@@ -76,5 +98,18 @@ class AviotCopter {
     stopVideoRoom(){
       console.log("Sending stop video room")
       this.socket.emit('video_room', {copterId: this.copterId, action: 'stop'})
+    }
+
+    setFence(data){
+      console.log("Sending set fence event")
+      this.socket.emit('fence', { copterId: this.copterId, action: 'set', data })
+    }
+    delFence(fenceId){
+      console.log("Sending delete fence event")
+      this.socket.emit('fence', { copterId: this.copterId, action: 'delete', data: { fenceId } })
+    }
+    resetFence(){
+      console.log("Sending reset fence event")
+      this.socket.emit('fence', { copterId: this.copterId, action: 'reset'})
     }
   }

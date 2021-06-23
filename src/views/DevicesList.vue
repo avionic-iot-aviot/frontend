@@ -2,13 +2,16 @@
   <div>
     <div class="my-container">
       <v-card :class="{ 'center-panel': false }">
+        <Toolbar
+          title="Drones"
+        />
         <BaseGrid
           tableName="devices"
-          :headers="tableData.headers"
-          :items="tableData.items"
-          :totalLength="total"
-          :injectOpts="paginationOpts"
-          :loading="loading"
+          :headers="tableData1.headers"
+          :items="tableData1.items"
+          :totalLength="total1"
+          :injectOpts="paginationOpts1"
+          :loading="loading1"
           :withActions="true"
           :withEdit="true"
           :serverItems="false"
@@ -28,6 +31,21 @@
             />
           </v-card>
         </v-dialog>
+        <Toolbar
+          title="Nodes"
+        />
+        <BaseGrid
+          tableName="devices"
+          :headers="tableData2.headers"
+          :items="tableData2.items"
+          :totalLength="total2"
+          :injectOpts="paginationOpts2"
+          :loading="loading2"
+          :withActions="false"
+          :withEdit="true"
+          :serverItems="false"
+          @onEdit="handleEdit"
+        ></BaseGrid>
       </v-card>
     </div>
   </div>
@@ -35,6 +53,7 @@
 
 <script>
 import BaseGrid from "@/components/BaseGrid";
+import Toolbar from "@/components/Toolbar";
 import _ from "lodash";
 import helper from "@/mixins/helper";
 import DeviceForm from "@/components/forms/DeviceForm";
@@ -44,7 +63,8 @@ export default {
 
   components: {
     BaseGrid,
-    DeviceForm
+    DeviceForm,
+    Toolbar
   },
 
   mixins: [helper],
@@ -54,46 +74,52 @@ export default {
       let tableHeaders=[];
 
       tableHeaders.push({
-        value: "Device_id",
+        value: "device_id",
         align: "start",
         sortable: true
       });
       tableHeaders.push({
-        value: "Mac",
+        value: "mac_address",
         sortable: true,
         align: "start"
       });
       tableHeaders.push({
-        value: "Default_Name",
+        value: "ip",
+        sortable: true,
+        align: "start"
+      });
+      tableHeaders.push({
+        value: "default_name",
         align: "start",
         sortable: true
       });
       tableHeaders.push({
-        value: "Current_Name",
+        value: "current_name",
         align: "start",
         sortable: true
       });
       tableHeaders.push({
-        value: "Created_at",
+        value: "created_at",
         align: "start",
         sortable: true
       });
       tableHeaders.push({
-        value: "Updated_at",
+        value: "updated_at",
         align: "start",
         sortable: true
       });
       return tableHeaders;
     },
-    mapItems() {
-      let tableItems = _.map(this.items, item => {
+    mapItems(items) {
+      let tableItems = _.map(items, item => {
         item.fields = {
-          Device_id: { data: item.Device_id, dataType: "text" },
-          Mac: { data: item.Mac, dataType: "text" },
-          Default_Name: { data: item.Default_Name, dataType: "text" },
-          Current_Name: { data: item.Current_Name, dataType: "text" },
-          Created_at: { data: item.Created_at, dataType: "text" },
-          Updated_at: { data: item.Updated_at, dataType: "text" },
+          device_id: { data: item.device_id, dataType: "text" },
+          mac_address: { data: item.mac_address, dataType: "text" },
+          ip: { data: item.ip, dataType: "text" },
+          default_name: { data: item.default_name, dataType: "text" },
+          current_name: { data: item.current_name, dataType: "text" },
+          created_at: { data: item.created_at, dataType: "text" },
+          updated_at: { data: item.updated_at, dataType: "text" },
         };
         /*item.click_action = {
           actionType: "custom",
@@ -105,7 +131,7 @@ export default {
           {
             actionType: "router-link",
             namedRoot: "VideoRoom",
-            namedRootParams: {copter_id: item.Mac.replace(/:/g,"")},
+            namedRootParams: {copter_id: "drone_"+item.mac_address.replace(/:/g,"")},
             icon: "gps_fixed",
           }
         ];
@@ -114,10 +140,20 @@ export default {
       return tableItems;
     },
     async fetch() {
-      let res=await this.fetchWithCheck(localStorage.ip,localStorage.port);
-      if (res) {
-        [this.items,this.total]=res;
-        this.tableData.items=this.mapItems();
+      let temp_items=await this.fetchWithCheck(this.$dbapp_url);
+      if (temp_items) {
+        // filter the elements on the basis of the is_drone flag
+        this.items1=_.filter(temp_items, (item) => {
+          return item.is_drone==true;
+        });
+        this.items2=_.filter(temp_items, (item) => {
+          return item.is_drone==false;
+        });
+        this.total1=this.items1.length;
+        this.total2=this.items2.length;
+        
+        this.tableData1.items=this.mapItems(this.items1);
+        this.tableData2.items=this.mapItems(this.items2);
       }
     },
     handleEdit(item) {
@@ -127,9 +163,9 @@ export default {
   },
 
   created() {
-    this.paginationOpts = {...this.paginationOpts, ...this.mergeOpts };
     this.fetch();
-    this.tableData.headers=this.mapHeaders();
+    this.tableData1.headers=this.mapHeaders();
+    this.tableData2.headers=this.mapHeaders();
   },
   mounted() {
     this.updateTimer=setInterval(this.fetch, 10000);
@@ -142,25 +178,27 @@ export default {
 
   data() {
     return {
-      paginationOpts: {
-        page: 1,
-        itemsPerPage: 25,
+      paginationOpts1: {
+        sortBy: ["device_id"],
         sortDesc: [false],
-        multiSort: false,
-        mustSort: true
       },
-      tableData: { headers: [], items: [] },
-      items: [],
-      total: 0,
-      loading: false,
+      paginationOpts2: {
+        sortBy: ["device_id"],
+        sortDesc: [false],
+      },
+
+      tableData1: { headers: [], items: [] },
+      tableData2: { headers: [], items: [] },
+      items1: [],
+      items2: [],
+      total1: 0,
+      total2: 0,
+      loading1: false,
+      loading2: false,
 
       formDialog: false,
       editItem: null,
 
-      mergeOpts: {
-        sortBy: ["Device_id"],
-        sortDesc: [false],
-      },
       updateTimer: null
     };
   }

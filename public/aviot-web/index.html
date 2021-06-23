@@ -30,6 +30,7 @@
             <input id="altitude" class="form-control" type="number" min=10 max=100 value="40"></input>
           </div>
           <div class="form-group">
+            <button class="btn btn-success" id="rtt-test">RTT TEST</button>
             <button class="btn btn-success" id="takeoff" disabled>TAKEOFF</button>
             <button class="btn btn-warning" id="land" disabled>LAND</button>
             <button class="btn btn-success" id="streaming" disabled onclick="startStreaming()">START STREAMING</button>
@@ -97,13 +98,13 @@
         </div>
       </div>
       <div class="col-xs-12 col-xl-6">
-        <div class="col-xs-12 col-xl-12 d-none" id="remotevideo-streaming">
+        <div class="col-xs-12 col-xl-12" id="remotevideo-streaming">
           <video class="rounded centered" id="remotevideo" width="100%" height="100%" autoplay playsinline/>
         </div>
       </div>
     </div>
   </div>
-  <div class="container-fluid d-none" style="padding: 30px" id="videoroom-container">
+  <div class="container-fluid" style="padding: 30px" id="videoroom-container">
     <div class="row">
   
       <div class="col-md-6">
@@ -131,6 +132,7 @@
           integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
           crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.4/socket.io.min.js"></script>
+  <script src="scripts/utils.js"></script>  
   <script src="scripts/config.js"></script>
   <script src="scripts/adapter.js"></script>
   <script src="scripts/janus.js"></script>
@@ -138,10 +140,12 @@
   <script src="scripts/streaming.js"></script>
   <script src="scripts/videoroom.js"></script>
   <script src="scripts/map.js"></script>
-  <script
-  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC68nUoeULDQc5WbvtAbybcAbBdjagK8CQ&callback=initMap&libraries=&v=weekly"
-  async
-  ></script>
+  <script>
+    const script = document.createElement('script');
+    script.setAttribute("async", "");
+    script.setAttribute("src", `https://maps.googleapis.com/maps/api/js?key=${getQueryVariable('maps_api_key')}&callback=initMap&libraries=&v=weekly`);
+    document.head.appendChild(script);
+  </script>
   <script src="scripts/app.js"></script>
   
   </body>

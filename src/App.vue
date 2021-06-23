@@ -5,7 +5,7 @@
       app
       color="primary"
       dark
-      v-if="connected"
+      v-if="true"
     >
       <div class="d-flex align-center">
         <h3 class="app-title">AVIOT_FE</h3>

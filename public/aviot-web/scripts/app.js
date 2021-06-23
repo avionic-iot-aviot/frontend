@@ -13,7 +13,7 @@ var latitude, longitude, altitude
 
 
 
-let mavros = new AviotCopter(getQueryVariable('copter_id'), '', 'http://13.48.71.129:31015')
+var mavros = new AviotCopter(getQueryVariable('copter_id'), '', WSS_ENDPOINT)
 
 mavros.on('connect', function(){
   console.log('connected')
@@ -45,6 +45,7 @@ function onGlobalPosUpdate(msg){
   longitude = msg.longitude
   $('#lat').html(latitude)
   $('#lng').html(longitude)
+  updateDronePos(latitude,longitude,getQueryVariable('copter_id'),true)
 }
 
 function onRelAltUpdate(msg){
@@ -98,6 +99,9 @@ function takeoff() {
   console.log('taking off');
   mavros.takeoff(latitude, longitude, Number($('#altitude').val()))
 }
+function rttTest() {
+  mavros.rttTest()
+}
 
 function land(){
   mavros.land(latitude, longitude, 0)
@@ -137,6 +141,7 @@ function stopVideoRoom(){
 
 $('#armThrottle').click(armThrottle)
 $('#takeoff').click(takeoff)
+$('#rtt-test').click(rttTest)
 $('#land').click(land)
 
 

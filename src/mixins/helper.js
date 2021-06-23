@@ -12,8 +12,8 @@ export default {
   methods: {
     ...mapMutations("snackbar", ["showMessage","closeMessage"]),
 
-    async fetchWithCheck(ip,port) {
-      const res=await AxiosService.fetch(ip,port);
+    async fetchWithCheck(url) {
+      const res=await AxiosService.fetch(url);
       if (res.error) {
         this.showMessage({
           context: enums.TOAST_TYPE.ERROR,
@@ -25,8 +25,8 @@ export default {
         return res;
       }
     },
-    async updateWithCheck(ip,port,name,mac) {
-      const res=await AxiosService.update(ip,port,name,mac);
+    async updateWithCheck(url,name,mac) {
+      const res=await AxiosService.update(url,name,mac);
       if (res.error) {
         this.showMessage({
           context: enums.TOAST_TYPE.ERROR,

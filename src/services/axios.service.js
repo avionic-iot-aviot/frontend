@@ -2,11 +2,11 @@ import axios from "axios";
 //import Vue from "vue";
 
 const AxiosService = {
-  async fetch(ip,port) {
+  async fetch(url) {
     return new Promise(function(resolve) {
-      axios.get('http://'+ip+":"+port+"/frontend/getAllDevices", {timeout: 5000})
+      axios.get(url+"/frontend/getAllDevices", {timeout: 5000})
       .then(function (response) {
-        resolve([response.data,response.data.length]);
+        resolve(response.data);
       })
       .catch(function (error) {
         console.log("fetch error: ",error);
@@ -14,13 +14,13 @@ const AxiosService = {
       })
     });
   },
-  async update(ip,port,name,mac) {
+  async update(url,name,mac) {
     return new Promise(function(resolve) {
       let payload={
         params: {
           device: {
-            NewHostName: name,
-            Mac: mac
+            current_name: name,
+            mac_address: mac
           }
         }
       };
@@ -29,7 +29,7 @@ const AxiosService = {
           "Access-Control-Allow-Origin": "*"
         }
       };*/
-      axios.post('http://'+ip+":"+port+"/frontend/configureDevice",payload)
+      axios.post(url+"/frontend/configureDevice",payload)
       .then(function () {
         resolve({});
       })

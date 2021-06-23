@@ -14,9 +14,7 @@
 
 <script>
 import enums from "@/enums";
-import { TokenService } from "@/services/token.service";
 import { mapMutations } from "vuex";
-import store from "@/store";
 
 export default {
   name: 'Navigation',
@@ -54,15 +52,13 @@ export default {
           text: this.$t('navigation.videoroom'),
           params: {copter_id: "mavros"}
         },
-        {
-          callback: async () => {
-            TokenService.removeToken("ip");
-            TokenService.removeToken("port");
-            store.commit("status/setConnected", false);
-            this.$router.push({ name: "Connect" }).catch(()=>{});
-          },
-          text: this.$t('navigation.disconnect')
-        }
+        // {
+        //   callback: async () => {
+        //     TokenService.removeToken("is_connected");
+        //     this.$router.push({ name: "Connect" }).catch(()=>{});
+        //   },
+        //   text: this.$t('navigation.disconnect')
+        // }
       ]
     };
   },
