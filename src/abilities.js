@@ -7,7 +7,7 @@ export default function defineAbilitiesFor() {
     switch (role) {
       case 'Admin':
         can('route', 'Devices');
-        can('route', 'VideoRoom');
+        can('route', 'Drone');
         break;
     }
   });

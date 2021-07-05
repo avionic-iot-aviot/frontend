@@ -3,7 +3,7 @@
     <div class="my-container">
       <v-card :class="{ 'center-panel': false }">
         <Toolbar
-          title="Drones"
+          title="Devices"
         />
         <BaseGrid
           tableName="devices"
@@ -32,7 +32,7 @@
           </v-card>
         </v-dialog>
         <Toolbar
-          title="Nodes"
+          title="Microservices"
         />
         <BaseGrid
           tableName="devices"
@@ -130,7 +130,7 @@ export default {
         item.actions = [
           {
             actionType: "router-link",
-            namedRoot: "VideoRoom",
+            namedRoot: "Drone",
             namedRootParams: {copter_id: "drone_"+item.mac_address.replace(/:/g,"")},
             icon: "gps_fixed",
           }

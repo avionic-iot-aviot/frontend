@@ -9,7 +9,7 @@
 
 <script>
 export default {
-  name: 'VideoRoom',
+  name: 'Drone',
   data() {
     return {
       janus_url: this.$janus_url,

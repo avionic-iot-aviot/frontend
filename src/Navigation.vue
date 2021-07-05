@@ -40,18 +40,17 @@ export default {
     return {
       mapping: {
         Devices: "Devices",
-        VideoRoom: "VideoRoom",
       },
       navigationItems: [
         {
           name: "Devices",
           text: this.$t('navigation.devices'),
         },
-        {
-          name: "VideoRoom",
-          text: this.$t('navigation.videoroom'),
-          params: {copter_id: "mavros"}
-        },
+        // {
+        //   name: "VideoRoom",
+        //   text: this.$t('navigation.videoroom'),
+        //   params: {copter_id: "mavros"}
+        // },
         // {
         //   callback: async () => {
         //     TokenService.removeToken("is_connected");
