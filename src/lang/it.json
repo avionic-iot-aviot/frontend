@@ -41,6 +41,13 @@
       "updated_at": "Aggiornato il"
     }
   },
+  "forms": {
+    "devices": {
+      "mac_address": "MAC",
+      "device_name": "Nome dispositivo",
+      "device_type": "Tipo dispositivo"
+    }
+  },
   "resource_types": {
     "device": "dispositivo"
   },

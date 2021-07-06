@@ -6,17 +6,33 @@
     <ValidationObserver v-slot="{ invalid }">
       <v-card-text>
         <v-text-field
-          :label="$t('headers.devices.mac_address')"
+          :label="$t('forms.devices.mac_address')"
           v-model="form.mac_address"
           :disabled="true"
         ></v-text-field>
-        <ValidationProvider :name="$t('headers.devices.current_name')" immediate rules="required" v-slot="{ errors }">
-          <v-text-field
-            :label="$t('headers.devices.current_name')"
-            v-model="form.current_name"
-          ></v-text-field>
-          <span class="form-error">{{ errors[0] }}</span>
-        </ValidationProvider>
+        <v-container>
+          <v-row>
+            <v-col cols="6">
+              <ValidationProvider :name="$t('forms.devices.device_name')" immediate rules="required" v-slot="{ errors }">
+                <v-text-field
+                  :label="$t('forms.devices.device_name')"
+                  v-model="form.device_name"
+                ></v-text-field>
+                <span class="form-error">{{ errors[0] }}</span>
+              </ValidationProvider>
+            </v-col>
+            <v-col cols="6">
+              <ValidationProvider :name="$t('forms.devices.device_type')" immediate rules="required" v-slot="{ errors }">
+                <v-combobox
+                  v-model="form.device_type"
+                  :items="device_types"
+                  :label="$t('forms.devices.device_type')"
+                ></v-combobox>
+                <span class="form-error">{{ errors[0] }}</span>
+              </ValidationProvider>
+            </v-col>
+          </v-row>
+        </v-container>
       </v-card-text>
       <FormButtons
         @onSave="onSubmit"
@@ -58,8 +74,15 @@ export default {
       form: {
         device_id: "",
         mac_address: "",
-        current_name: ""
+        device_name: "",
+        device_type: ""
       },
+      device_types: [
+        'fccs',
+        'sensor',
+        'gw',
+        'camera',
+      ],
     };
   },
   
@@ -75,7 +98,8 @@ export default {
   
   methods: {
     async onSubmit() {
-      let res=await this.updateWithCheck(this.$dbapp_url,this.form.current_name,this.form.mac_address);
+      let current_name=this.form.device_name+"-"+this.form.device_type;
+      let res=await this.updateWithCheck(this.$dbapp_url,current_name,this.form.mac_address);
       if (res) {
         this.$emit("formSucceed");
         this.$emit("formClose");
@@ -85,15 +109,23 @@ export default {
       this.$emit("formCancel");
       this.$emit("formClose");
     },
+    split(current_name,i) {
+      let temp=current_name.split("-");
+      if (i<temp.length)
+        return temp[i];
+      return "";
+    },
     setForm(row = null) {
       if (row && !_.isEmpty(row)) {
         this.form.device_id = row.device_id;
         this.form.mac_address = row.mac_address;
-        this.form.current_name = row.current_name;
+        this.form.device_name = this.split(row.current_name,0);
+        this.form.device_type = this.split(row.current_name,1);
       } else if (row == null) {
         this.form.device_id = "";
         this.form.mac_address = "";
-        this.form.current_name = "";
+        this.form.device_name = "";
+        this.form.device_type = "";
       }
     },
   },

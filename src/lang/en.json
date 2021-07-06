@@ -41,6 +41,13 @@
       "updated_at": "Updated at"
     }
   },
+  "forms": {
+    "devices": {
+      "mac_address": "MAC",
+      "device_name": "Device name",
+      "device_type": "Device type"
+    }
+  },
   "resource_types": {
     "device": "device"
   },

@@ -137,7 +137,7 @@ export default {
           {
             actionType: "router-link",
             namedRoot: "Drone",
-            namedRootParams: {copter_id: "drone_"+item.mac_address.replace(/:/g,"")},
+            namedRootParams: {copter_id: "gw_"+item.mac_address.replace(/:/g,"")},
             icon: "gps_fixed",
           }
         ];
