@@ -34,6 +34,7 @@
       "device_id": "Device ID",
       "mac_address": "MAC",
       "ip": "IP",
+      "copter_id": "Copter ID",
       "default_name": "Default name",
       "current_name": "Current name",
       "created_at": "Created at",

@@ -16,7 +16,6 @@ const routes = [
   },
   {
     path: '/',
-    name: 'Devices',
     component: DevicesList
   },
   {

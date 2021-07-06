@@ -89,6 +89,11 @@ export default {
         align: "start"
       });
       tableHeaders.push({
+        value: "copter_id",
+        align: "start",
+        sortable: true
+      });
+      tableHeaders.push({
         value: "default_name",
         align: "start",
         sortable: true
@@ -116,6 +121,7 @@ export default {
           device_id: { data: item.device_id, dataType: "text" },
           mac_address: { data: item.mac_address, dataType: "text" },
           ip: { data: item.ip, dataType: "text" },
+          copter_id: { data: item.copter_id, dataType: "text" },
           default_name: { data: item.default_name, dataType: "text" },
           current_name: { data: item.current_name, dataType: "text" },
           created_at: { data: item.created_at, dataType: "text" },
@@ -142,12 +148,12 @@ export default {
     async fetch() {
       let temp_items=await this.fetchWithCheck(this.$dbapp_url);
       if (temp_items) {
-        // filter the elements on the basis of the is_drone flag
+        // filter the elements on the basis of the is_device flag
         this.items1=_.filter(temp_items, (item) => {
-          return item.is_drone==true;
+          return item.is_device==true;
         });
         this.items2=_.filter(temp_items, (item) => {
-          return item.is_drone==false;
+          return item.is_device==false;
         });
         this.total1=this.items1.length;
         this.total2=this.items2.length;
