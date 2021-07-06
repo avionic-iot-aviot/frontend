@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import DevicesList from '../views/DevicesList.vue'
 import Drone from '../views/Drone.vue'
+import Controller from '../views/Controller.vue'
 import defineAbilitiesFor from '@/abilities'
 import i18n from "@/i18n";
 import config from "@/config.js"
@@ -22,6 +23,11 @@ const routes = [
     path: '/drones/:copter_id',
     name: 'Drone',
     component: Drone
+  },
+  {
+    path: '/sensors',
+    name: 'Controller',
+    component: Controller
   }
 ]
 

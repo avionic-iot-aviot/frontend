@@ -133,12 +133,14 @@ export default {
 
           },
         };*/
+        let device_type=this.split(item.current_name,1);
         item.actions = [
           {
             actionType: "router-link",
-            namedRoot: "Drone",
+            namedRoot: device_type=="sensor" ? "Controller" : "Drone",
             namedRootParams: {copter_id: "gw_"+item.mac_address.replace(/:/g,"")},
             icon: "gps_fixed",
+            disable: device_type=="fccs",
           }
         ];
         return item;

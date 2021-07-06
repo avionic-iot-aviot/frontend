@@ -8,6 +8,7 @@ export default function defineAbilitiesFor() {
       case 'Admin':
         can('route', 'Devices');
         can('route', 'Drone');
+        can('route', 'Controller');
         break;
     }
   });

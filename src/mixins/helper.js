@@ -41,6 +41,12 @@ export default {
         });
         return res;
       }
-    }
+    },
+    split(current_name,i) {
+      let temp=current_name.split("-");
+      if (i<temp.length)
+        return temp[i];
+      return "";
+    },
   }
 }

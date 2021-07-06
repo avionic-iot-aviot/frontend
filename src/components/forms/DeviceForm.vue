@@ -109,12 +109,6 @@ export default {
       this.$emit("formCancel");
       this.$emit("formClose");
     },
-    split(current_name,i) {
-      let temp=current_name.split("-");
-      if (i<temp.length)
-        return temp[i];
-      return "";
-    },
     setForm(row = null) {
       if (row && !_.isEmpty(row)) {
         this.form.device_id = row.device_id;
