@@ -6,6 +6,7 @@ export default function defineAbilitiesFor() {
 
     switch (role) {
       case 'Admin':
+        can('route', 'Home');
         can('route', 'Devices');
         can('route', 'Drone');
         can('route', 'Controller');
