@@ -1,7 +1,8 @@
 class AviotCopter {
 
-    constructor(copterId, token, endpoint){
+    constructor(copterId, fccsId, token, endpoint){
       this.copterId = copterId
+      this.fccsId = fccsId
       this.callbacks = {}
       this._onConnect = this._onConnect.bind(this)
       this.__emit = this.__emit.bind(this)
@@ -42,10 +43,11 @@ class AviotCopter {
     }
     _onConnect(){
       this.socket.emit('connect_to_copter', this.copterId)
-      this.socket.on(`/${this.copterId}/battery`, this.__emit('battery'))
-      this.socket.on(`/${this.copterId}/state`, this.__emit('state'))
-      this.socket.on(`/${this.copterId}/global_position/global`, this.__emit('global_position'))
-      this.socket.on(`/${this.copterId}/global_position/rel_alt`, this.__emit('relative_altitude'))
+      this.socket.emit('connect_to_copter', this.fccsId)
+      this.socket.on(`/${this.fccsId}/battery`, this.__emit('battery'))
+      this.socket.on(`/${this.fccsId}/state`, this.__emit('state'))
+      this.socket.on(`/${this.fccsId}/global_position/global`, this.__emit('global_position'))
+      this.socket.on(`/${this.fccsId}/global_position/rel_alt`, this.__emit('relative_altitude'))
       this.socket.on(`/${this.copterId}/streaming`, this.__emit('streaming'))
       this.socket.on(`/${this.copterId}/video_room`, this.__emit('video_room'))
       this.socket.on(`/${this.copterId}/rtt_resp`, (arg) => {
@@ -66,17 +68,17 @@ class AviotCopter {
       this._emit('connect', {status: 'connected'})
     }
     armThrottle(){
-      this.socket.emit('arm', {copterId: this.copterId})
+      this.socket.emit('arm', {copterId: this.fccsId})
     }
     takeoff(lat, lng, alt) {
       console.log('taking off');
-      this.socket.emit('takeoff', {copterId: this.copterId, latitude: lat, longitude: lng, altitude: alt})
+      this.socket.emit('takeoff', {copterId: this.fccsId, latitude: lat, longitude: lng, altitude: alt})
     }
     land(lat, lng, alt){
-      this.socket.emit('land', {copterId: this.copterId, latitude: lat, longitude: lng, altitude: alt} )
+      this.socket.emit('land', {copterId: this.fccsId, latitude: lat, longitude: lng, altitude: alt} )
     }
     cmdVel(linear={x:0, y:0, z:0}, angular={x:0, y:0, z:0}){
-      this.socket.emit('cmd_vel', {copterId: this.copterId, linear: linear, angular: angular})
+      this.socket.emit('cmd_vel', {copterId: this.fccsId, linear: linear, angular: angular})
     }
     startStreaming(){
       console.log("Sending start streaming")
@@ -102,14 +104,14 @@ class AviotCopter {
 
     setFence(data){
       console.log("Sending set fence event")
-      this.socket.emit('fence', { copterId: this.copterId, action: 'set', data })
+      this.socket.emit('fence', { copterId: this.fccsId, action: 'set', data })
     }
     delFence(fenceId){
       console.log("Sending delete fence event")
-      this.socket.emit('fence', { copterId: this.copterId, action: 'delete', data: { fenceId } })
+      this.socket.emit('fence', { copterId: this.fccsId, action: 'delete', data: { fenceId } })
     }
     resetFence(){
       console.log("Sending reset fence event")
-      this.socket.emit('fence', { copterId: this.copterId, action: 'reset'})
+      this.socket.emit('fence', { copterId: this.fccsId, action: 'reset'})
     }
   }

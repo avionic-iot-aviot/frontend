@@ -13,7 +13,7 @@ var latitude, longitude, altitude
 
 
 
-var mavros = new AviotCopter(getQueryVariable('copter_id'), '', WSS_ENDPOINT)
+var mavros = new AviotCopter(getQueryVariable('copter_id'), getQueryVariable('fccs_id'), '', WSS_ENDPOINT)
 
 mavros.on('connect', function(){
   console.log('connected')

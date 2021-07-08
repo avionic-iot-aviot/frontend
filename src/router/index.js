@@ -20,9 +20,9 @@ const routes = [
     component: DevicesList
   },
   {
-    path: '/drones/:copter_id',
+    path: '/drones',
     name: 'Drone',
-    component: Drone
+    component: Drone,
   },
   {
     path: '/sensors',

@@ -133,16 +133,56 @@ export default {
 
           },
         };*/
+
+        // retrieve device type
         let device_type=this.split(item.current_name,1);
-        item.actions = [
-          {
-            actionType: "router-link",
-            namedRoot: device_type=="sensor" ? "Controller" : "Drone",
-            namedRootParams: {copter_id: "gw_"+item.mac_address.replace(/:/g,"")},
-            icon: "gps_fixed",
-            disable: device_type=="fccs",
+
+        switch (device_type) {
+          case "gw": {
+            // retrieve fccs
+            let fccs=null;
+            items.forEach(i => {
+              if (i.copter_id==item.copter_id && this.split(i.current_name,1)=="fccs")
+                fccs=i;
+            });
+            if (!fccs)
+              fccs=item;
+
+            item.actions = [
+              {
+                actionType: "router-link",
+                namedRoot: "Drone",
+                namedRootQuery: {
+                  copter_id: "gw_"+item.mac_address.replace(/:/g,""),
+                  fccs_id: "fccs_"+fccs.mac_address.replace(/:/g,""),
+                },
+                icon: "gps_fixed",
+              }
+            ];
+            break;
           }
-        ];
+          case "sensor": {
+            item.actions = [
+              {
+                actionType: "router-link",
+                namedRoot: "Controller",
+                icon: "gps_fixed",
+              }
+            ];
+            break;
+          }
+          default: {
+            item.actions = [
+              {
+                actionType: "router-link",
+                icon: "gps_fixed",
+                disable: true,
+              }
+            ];
+            break;
+          }
+        }
+
         return item;
       });
       return tableItems;
