@@ -38,7 +38,8 @@
       "default_name": "Default name",
       "current_name": "Current name",
       "created_at": "Created at",
-      "updated_at": "Updated at"
+      "updated_at": "Updated at",
+      "rtt": "RTT"
     }
   },
   "forms": {

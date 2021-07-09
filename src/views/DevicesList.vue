@@ -57,6 +57,7 @@ import Toolbar from "@/components/Toolbar";
 import _ from "lodash";
 import helper from "@/mixins/helper";
 import DeviceForm from "@/components/forms/DeviceForm";
+const io = require('socket.io-client');
 
 export default {
   name: 'DevicesList',
@@ -70,7 +71,7 @@ export default {
   mixins: [helper],
 
   methods: {
-    mapHeaders() {
+    mapHeaders(is_devices) {
       let tableHeaders=[];
 
       tableHeaders.push({
@@ -113,6 +114,12 @@ export default {
         align: "start",
         sortable: true
       });
+      if (is_devices)
+        tableHeaders.push({
+          value: "rtt",
+          align: "start",
+          sortable: true
+        });
       return tableHeaders;
     },
     mapItems(items) {
@@ -126,6 +133,7 @@ export default {
           current_name: { data: item.current_name, dataType: "text" },
           created_at: { data: item.created_at, dataType: "text" },
           updated_at: { data: item.updated_at, dataType: "text" },
+          rtt: { data: item.rtt, dataType: "text" },
         };
         /*item.click_action = {
           actionType: "custom",
@@ -200,26 +208,83 @@ export default {
         this.total1=this.items1.length;
         this.total2=this.items2.length;
         
+        this.rttUpdate();
         this.tableData1.items=this.mapItems(this.items1);
         this.tableData2.items=this.mapItems(this.items2);
       }
     },
+    sendRttTest(copter_id) {
+      this.rtt[copter_id].rtt_ts1=Date.now();
+      console.log('Sending rtt_test to copter '+copter_id);
+      this.socket.emit('rtt_test', {copterId: copter_id});
+    },
+    rttUpdate() {
+      // update the rtt field for all the devices
+      this.items1.forEach(item => {
+        let device_type=this.split(item.current_name,1);
+        if (device_type=="gw" && item.copter_id in this.rtt)
+          item.rtt=this.rtt[item.copter_id].rtt_diff;
+        else item.rtt="";
+      });
+    },
+    rttTest() {
+      let filteredItems=_.uniqBy(this.items1,'copter_id');
+      filteredItems.forEach(item => {
+        if (!(item.copter_id in this.rtt)) {
+          this.rtt[item.copter_id]={};
+
+          // connect to copter
+          console.log("Connecting to copter "+item.copter_id);
+          this.socket.emit('connect_to_copter', item.copter_id);
+          
+          // send rtt test to copter
+          this.sendRttTest(item.copter_id);
+          
+          // handle rtt response message
+          this.socket.on(`/${item.copter_id}/rtt_resp`, () => {
+            console.log('Received rtt_resp from copter '+item.copter_id);
+
+            let rtt_record=this.rtt[item.copter_id];
+            rtt_record.rtt_ts2=Date.now();
+            rtt_record.rtt_diff=rtt_record.rtt_ts2-rtt_record.rtt_ts1;
+
+            this.rttUpdate();
+            this.tableData1.items=this.mapItems(this.items1);
+          });
+        }
+        else {
+          // send rtt test to copter
+          this.sendRttTest(item.copter_id);
+        }
+      });
+    },
     handleEdit(item) {
       this.editItem=item;
       this.formDialog=true;
-    }
+    },
+    onConnect(){
+      console.log("Connected to wss");
+      this.connected=true;
+    },
   },
 
   created() {
-    this.fetch();
-    this.tableData1.headers=this.mapHeaders();
-    this.tableData2.headers=this.mapHeaders();
+    this.fetch().then(this.rttTest);
+    this.tableData1.headers=this.mapHeaders(true);
+    this.tableData2.headers=this.mapHeaders(false);
   },
   mounted() {
-    this.updateTimer=setInterval(this.fetch, 10000);
+    this.updateTimer=setInterval(() => {
+      this.fetch().then(this.rttTest);
+    }, 10000);
+
+    // connect to wss
+    this.socket = io(this.$wss_url)
+    this.socket.on('connect', this.onConnect)
   },
   beforeRouteLeave (to, from, next) {
     clearInterval(this.updateTimer);
+    this.socket.disconnect();
     next();
   },
 
@@ -247,7 +312,13 @@ export default {
       formDialog: false,
       editItem: null,
 
-      updateTimer: null
+      updateTimer: null,
+
+      // connection with wss through socket.io
+      // for rtt test
+      socket: null,
+      connected: false,
+      rtt: {}
     };
   }
 };
