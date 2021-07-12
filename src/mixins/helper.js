@@ -42,11 +42,20 @@ export default {
         return res;
       }
     },
-    split(current_name,i) {
+    split(current_name) {
       let temp=current_name.split("-");
-      if (i<temp.length)
-        return temp[i];
-      return "";
+      while (temp.length<3) {
+        temp.push("");
+      }
+      if (temp.length>3) {
+        let name=temp.slice(0,temp.length-2).join("-");
+        temp=[
+          name,
+          temp[temp.length-2],
+          temp[temp.length-1],
+        ];
+      }
+      return temp;
     },
   }
 }

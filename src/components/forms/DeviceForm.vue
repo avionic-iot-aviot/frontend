@@ -23,11 +23,11 @@
             </v-col>
             <v-col cols="6">
               <ValidationProvider :name="$t('forms.devices.device_type')" immediate rules="required" v-slot="{ errors }">
-                <v-combobox
+                <v-select
                   v-model="form.device_type"
                   :items="device_types"
                   :label="$t('forms.devices.device_type')"
-                ></v-combobox>
+                ></v-select>
                 <span class="form-error">{{ errors[0] }}</span>
               </ValidationProvider>
             </v-col>
@@ -113,8 +113,11 @@ export default {
       if (row && !_.isEmpty(row)) {
         this.form.device_id = row.device_id;
         this.form.mac_address = row.mac_address;
-        this.form.device_name = this.split(row.current_name,0);
-        this.form.device_type = this.split(row.current_name,1);
+        let temp=this.split(row.current_name);
+        this.form.device_name = temp[0];
+        this.form.device_type = temp[1];
+        if (!this.device_types.includes(this.form.device_type))
+          this.form.device_type="gw";
       } else if (row == null) {
         this.form.device_id = "";
         this.form.mac_address = "";

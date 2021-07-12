@@ -143,14 +143,14 @@ export default {
         };*/
 
         // retrieve device type
-        let device_type=this.split(item.current_name,1);
+        let device_type=this.split(item.current_name)[1];
 
         switch (device_type) {
           case "gw": {
             // retrieve fccs
             let fccs=null;
             items.forEach(i => {
-              if (i.copter_id==item.copter_id && this.split(i.current_name,1)=="fccs")
+              if (i.copter_id==item.copter_id && this.split(i.current_name)[1]=="fccs")
                 fccs=i;
             });
             if (!fccs)
@@ -221,7 +221,7 @@ export default {
     rttUpdate() {
       // update the rtt field for all the devices
       this.items1.forEach(item => {
-        let device_type=this.split(item.current_name,1);
+        let device_type=this.split(item.current_name)[1];
         if (device_type=="gw" && item.copter_id in this.rtt)
           item.rtt=this.rtt[item.copter_id].rtt_diff;
         else item.rtt="";
