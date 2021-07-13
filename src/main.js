@@ -37,6 +37,7 @@ extend('required', {
 const tenantId=config.tenantId ? config.tenantId : window.location.href.split("/")[2].split(".")[0];
 Vue.prototype.$dbapp_url=window.location.protocol+"//"+tenantId+".aviot.it/dbapp";
 Vue.prototype.$wss_url=window.location.protocol+"//wss."+tenantId+".aviot.it";
+Vue.prototype.$controller_url=window.location.protocol+"//controller."+tenantId+".aviot.it";
 Vue.prototype.$janus_url=window.location.protocol+"//"+tenantId+".aviot.it/janus";
 
 new Vue({

@@ -17,7 +17,7 @@ function reset() {
     links = []
 }
 // client code here
-var socket = io.connect('18.134.151.140:30030',{ transports : ['websocket'] });
+var socket = io.connect(CONTROLLER_ENDPOINT,{ transports : ['websocket'] });
 
 socket.on('connect', function (message) {
     console.log("Connected")

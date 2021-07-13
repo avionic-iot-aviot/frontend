@@ -1,6 +1,6 @@
 
 <template>
-  <iframe frameBorder="0" :src="'./controller/index.html'">
+  <iframe frameBorder="0" :src="'./controller/index.html?controller_url='+controller_url">
   </iframe>
 </template>
 
@@ -9,7 +9,7 @@ export default {
   name: 'Controller',
   data() {
     return {
-      
+      controller_url: this.$controller_url,
     };
   }
 }
