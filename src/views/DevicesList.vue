@@ -228,6 +228,8 @@ export default {
       });
     },
     rttTest() {
+      if (!this.connected) return;
+
       let filteredItems=_.uniqBy(this.items1,'copter_id');
       filteredItems.forEach(item => {
         if (!(item.copter_id in this.rtt)) {
@@ -266,6 +268,10 @@ export default {
       console.log("Connected to wss");
       this.connected=true;
     },
+    onDisconnect(){
+      console.log("Disconnected from wss");
+      this.connected=false;
+    },
   },
 
   created() {
@@ -281,6 +287,7 @@ export default {
     // connect to wss
     this.socket = io(this.$wss_url)
     this.socket.on('connect', this.onConnect)
+    this.socket.on('disconnect', this.onDisconnect)
   },
   beforeRouteLeave (to, from, next) {
     clearInterval(this.updateTimer);
