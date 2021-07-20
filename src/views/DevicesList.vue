@@ -58,6 +58,7 @@ import _ from "lodash";
 import helper from "@/mixins/helper";
 import DeviceForm from "@/components/forms/DeviceForm";
 const io = require('socket.io-client');
+import { v4 as uuidv4 } from 'uuid';
 
 export default {
   name: 'DevicesList',
@@ -213,10 +214,10 @@ export default {
         this.tableData2.items=this.mapItems(this.items2);
       }
     },
-    sendRttTest(copter_id) {
+    sendRttTest(copter_id,frontendId) {
       this.rtt[copter_id].rtt_ts1=Date.now();
       console.log('Sending rtt_test to copter '+copter_id);
-      this.socket.emit('rtt_test', {copterId: copter_id});
+      this.socket.emit('rtt_test', {copterId: copter_id, frontendId});
     },
     rttUpdate() {
       // update the rtt field for all the devices
@@ -240,10 +241,13 @@ export default {
           this.socket.emit('connect_to_copter', item.copter_id);
           
           // send rtt test to copter
-          this.sendRttTest(item.copter_id);
+          this.sendRttTest(item.copter_id,this.frontendId);
           
           // handle rtt response message
-          this.socket.on(`/${item.copter_id}/rtt_resp`, () => {
+          this.socket.on(`/${item.copter_id}/rtt_resp`, (data) => {
+            if (data.frontendId!=this.frontendId)
+              return;
+
             console.log('Received rtt_resp from copter '+item.copter_id);
 
             let rtt_record=this.rtt[item.copter_id];
@@ -256,7 +260,7 @@ export default {
         }
         else {
           // send rtt test to copter
-          this.sendRttTest(item.copter_id);
+          this.sendRttTest(item.copter_id,this.frontendId);
         }
       });
     },
@@ -325,7 +329,8 @@ export default {
       // for rtt test
       socket: null,
       connected: false,
-      rtt: {}
+      rtt: {},
+      frontendId: uuidv4()
     };
   }
 };
