@@ -43,8 +43,10 @@ function onVideoRoom(msg){
 function onGlobalPosUpdate(msg){
   latitude = msg.latitude
   longitude = msg.longitude
+  altitude = msg.altitude
   $('#lat').html(latitude)
   $('#lng').html(longitude)
+  $('#alt').html(Math.round(altitude * 10) / 10)
   updateDronePos(latitude,longitude,getQueryVariable('copter_id'),true)
 }
 
@@ -59,7 +61,7 @@ function onRelAltUpdate(msg){
       $('#takeoff').attr('disabled', false)
     }
   }
-  $('#alt').html(Math.round(msg * 10) / 10)
+  $('#rel-alt').html(Math.round(msg * 10) / 10)
 }
 function onStateUpdate(data) {
   let className = data.armed ? 'success' : 'danger'
