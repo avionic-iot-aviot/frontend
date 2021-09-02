@@ -171,7 +171,7 @@ function press(e){
   if (e.keyCode === 38 /* up */ || e.keyCode === 87 /* w */ || e.keyCode === 90 /* z */){
     direction = {
       x: 0,
-      y: ,
+      y: 0,
       z: -0.5,
       _x: 0,
       _y: 0,
