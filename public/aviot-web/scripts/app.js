@@ -171,8 +171,8 @@ function press(e){
   if (e.keyCode === 38 /* up */ || e.keyCode === 87 /* w */ || e.keyCode === 90 /* z */){
     direction = {
       x: 0,
-      y: 0.5,
-      z: 0,
+      y: ,
+      z: -0.5,
       _x: 0,
       _y: 0,
       _z: 0
@@ -191,8 +191,8 @@ function press(e){
   if (e.keyCode === 40 /* down */ || e.keyCode === 83 /* s */){
     direction = {
       x: 0,
-      y: -0.5,
-      z: 0,
+      y: 0,
+      z: 0.5,
       _x: 0,
       _y: 0,
       _z: 0
@@ -211,8 +211,8 @@ function press(e){
   if (e.keyCode === 32 /* space */ || e.keyCode === 16 /* shift */){
     direction = {
       x: 0,
-      y: 0,
-      z: 0.5,
+      y: 0.5,
+      z: 0,
       _x: 0,
       _y: 0,
       _z: 0
@@ -221,8 +221,8 @@ function press(e){
   if (e.keyCode === 17 /* ctrl */){
     direction = {
       x: 0,
-      y: 0,
-      z: -0.5,
+      y: -0.5,
+      z: 0,
       _x: 0,
       _y: 0,
       _z: 0
