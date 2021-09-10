@@ -48,7 +48,9 @@ if(window.location.protocol === 'http:')
 else
 	server = "https://" + window.location.hostname + ":8089/janus";
 
-server = "http://13.48.71.129:32542/janus"
+// ANDS modified
+server="https://" + window.location.hostname + "/janus/janus";
+
 var janus = null;
 var streaming = null;
 var opaqueId = "streamingtest-"+Janus.randomString(12);
