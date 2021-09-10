@@ -86,6 +86,7 @@ function addPolygon(){
 function removeMarkers(){
   polygon.forEach((m) => m.setMap(null))
   polygon = []
+  refreshArea()
 }
 
 function removePolyline(index){
@@ -115,6 +116,8 @@ function updateTable(){
 }
 
 function addArea(){
+  if (polygon.length==0) return;
+
   refreshArea()
   polygon.forEach(m => m.setMap(null))
   areas.push({
