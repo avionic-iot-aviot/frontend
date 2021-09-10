@@ -33,7 +33,7 @@
             <button class="btn btn-success" id="rtt-test">RTT TEST</button>
             <button class="btn btn-success" id="takeoff" disabled>TAKEOFF</button>
             <button class="btn btn-warning" id="land" disabled>LAND</button>
-            <button class="btn btn-success" id="streaming" disabled onclick="startStreaming()">START STREAMING</button>
+            <button class="btn btn-success" id="streaming" disabled onclick="startStreaming()">START VIDEO STREAMING</button>
             <button class="btn btn-success" id="videoroom" onclick="startVideoRoom()">START VIDEO ROOM</button>
             <button class="btn btn-warning d-none" id="exit-video-room" onclick="exitVideoRoom()">LEAVE VIDEO ROOM</button>
             <button class="btn btn-warning d-none" id="mute-mic" onclick="mute()">MUTE MIC</button>
@@ -106,6 +106,41 @@
       </div>
     </div>
   </div>
+  <div class="container hide" id="streams">
+    <div class="row">
+      <div class="col-md-6" id="streams">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">Streams <i id="update-streams" class="fa fa-refresh" title="Update list of streams" style="cursor: pointer;"></i></h3>
+          </div>
+          <div class="panel-body" id="list">
+            <div class="btn-group btn-group-sm">
+              <button class="btn btn-primary" autocomplete="off" id="watch">Watch or Listen</button>
+              <div class="btn-group btn-group-sm">
+                <button autocomplete="off" id="streamset" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                  Streams list<span class="caret"></span>
+                </button>
+                <ul id="streamslist" class="dropdown-menu" role="menu">
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">Stream
+              <span class="label label-info hide" id="status"></span>
+              <span class="label label-primary hide" id="curres"></span>
+              <span class="label label-info hide" id="curbitrate"></span>
+            </h3>
+          </div>
+          <div class="panel-body" id="stream"></div>
+        </div>
+      </div>
+    </div>
+  </div>
   <div class="container-fluid" style="padding: 30px" id="videoroom-container">
     <div class="row">
   
@@ -139,7 +174,8 @@
   <script src="scripts/adapter.js"></script>
   <script src="scripts/janus.js"></script>
   <script src="scripts/aviot.js"></script>
-  <script src="scripts/streaming.js"></script>
+  <!-- <script src="scripts/streaming.js"></script> -->
+  <script src="scripts/streamingtest.js"></script>
   <script src="scripts/videoroom.js"></script>
   <script src="scripts/map.js"></script>
   <script>
