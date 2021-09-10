@@ -48,6 +48,7 @@ if(window.location.protocol === 'http:')
 else
   server = "https://" + window.location.hostname + ":8089/janus";
 
+server = JANUS_SERVER_ENDPOINT;
 var janus = null;
 var streaming = null;
 var opaqueId = "streamingtest-"+Janus.randomString(12);
@@ -82,7 +83,7 @@ $(document).ready(function() {
                   plugin: "janus.plugin.streaming",
                   opaqueId: opaqueId,
                   success: function(pluginHandle) {
-                    $('#details').remove();
+                    //$('#details').remove();
                     streaming = pluginHandle;
                     Janus.log("Plugin attached! (" + streaming.getPlugin() + ", id=" + streaming.getId() + ")");
                     // Setup streaming session
