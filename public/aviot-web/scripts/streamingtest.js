@@ -325,10 +325,8 @@ function updateStreamsList() {
         Janus.debug(list);
         for (var mp in list) {
           if(list[mp]["description"].includes("aviot-stream-")) {
-          for (var mp in list) {
             Janus.debug("  >> [" + list[mp]["id"] + "] " + list[mp]["description"] + " (" + list[mp]["type"] + ")");
             $('#streamslist').append("<li><a href='#' id='" + list[mp]["id"] + "'>" + list[mp]["description"] + " (" + list[mp]["type"] + ")" + "</a></li>");  
-            }
           }
         }
         $('#streamslist a').unbind('click').click(function () {
