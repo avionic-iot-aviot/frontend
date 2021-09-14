@@ -65,6 +65,14 @@ class AviotCopter {
           this.rtt_count=0
         }
       });
+      this.socket.on(`/${this.fccsId}/fence`, (arg) => {
+        areas.forEach(function(a, index){
+          if (a.temp_id==arg.data.temp_id) {
+            a.id=arg.res.polygon_id;
+          }
+        });
+        updateTable();
+      });
       this._emit('connect', {status: 'connected'})
     }
     armThrottle(){

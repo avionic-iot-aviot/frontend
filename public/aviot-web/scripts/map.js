@@ -90,12 +90,13 @@ function removeMarkers(){
 }
 
 function removePolyline(index){
+  if (!areas[index].id) return;
 
   let removed = areas.splice(index, 1);
   console.log(removed)
   removed[0].area.setMap(null)
   updateTable();
-  mavros.delFence(index)
+  mavros.delFence(removed[0].id)
 
 }
 function updateTable(){
@@ -104,7 +105,7 @@ function updateTable(){
   areas.forEach(function(a, index){
 
     let td = [
-      '<td>'+ (index + 1) +'</td>',
+      '<td>'+ (a.id>=0?(a.id+1):"") +'</td>',
       '<td>'+ a.polygon.length +'</td>',
       '<td><span class="text-'+ (a.isAllowed ? 'success' : 'danger') + ' ">' + (a.isAllowed ? 'Allow' : 'Deny') + '</span></td>',
       '<td><Button class="btn btn-sm btn-warning" onclick="removePolyline('+ index +')">remove</Button></td>'
@@ -119,15 +120,19 @@ function addArea(){
   if (polygon.length==0) return;
 
   refreshArea()
+  let temp_id=uuidv4();
   polygon.forEach(m => m.setMap(null))
   areas.push({
+    id: -1,
+    temp_id: temp_id,
     area: area,
     polygon: polygon,
     isAllowed: isAllowed()
   })
   let payload = {
     mode: isAllowed() ? 'ALLOW' : 'DENY',
-    points: polygon.map(m => ({x: m.position.lat(), y: m.position.lng(), z: 0 }))
+    points: polygon.map(m => ({x: m.position.lat(), y: m.position.lng(), z: 0 })),
+    temp_id: temp_id
   }
   console.log("Adding area", payload)
   mavros.setFence(payload)
