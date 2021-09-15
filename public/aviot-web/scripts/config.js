@@ -6,3 +6,5 @@ var WSS_ENDPOINT=getQueryVariable('wss_url');
 
 console.log(JANUS_SERVER_ENDPOINT);
 console.log(WSS_ENDPOINT);
+
+frontendId=uuidv4();

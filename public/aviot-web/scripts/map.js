@@ -24,32 +24,35 @@ function initMap() {
 
 
 
-  map.addListener('click', addMarker)
+  map.addListener('click', onClick)
   $("#map").css('height', '50vh')
 }
 function isAllowed(){
   return $('#allow-area:checked').length
 }
 
-function addMarker(evt) {
-
+function addMarker(lat,lng) {
   let marker = new google.maps.Marker({
     position: {
-      lat: evt.latLng.lat(),
-      lng: evt.latLng.lng()
+      lat,
+      lng
     },
     draggable: true,
     map,
     title: "Point " + (polygon.length+1),
   })
   
-  marker.addListener('drag', refreshArea)
+  marker.addListener('drag', onDrag)
 
   polygon.push(marker)
   
+}
+function onDrag(evt) {
+  refreshArea();
+}
+function onClick(evt) {
+  addMarker(evt.latLng.lat(),evt.latLng.lng());
   refreshArea()
-
-  
 }
 function updateDronePos(lat, lng, droneId, center){
   if(droneMarker === null){
@@ -90,7 +93,7 @@ function removeMarkers(){
 }
 
 function removePolyline(index){
-  if (!areas[index].id) return;
+  if (areas[index].id<0) return;
 
   let removed = areas.splice(index, 1);
   console.log(removed)
@@ -98,6 +101,17 @@ function removePolyline(index){
   updateTable();
   mavros.delFence(removed[0].id)
 
+}
+function clearMap() {
+  polygon.forEach((m) => m.setMap(null))
+  polygon = []
+  refreshArea()
+
+  areas.forEach(function(a, index){
+    a.area.setMap(null);
+  });
+  areas=[];
+  updateTable();
 }
 function updateTable(){
 
@@ -116,27 +130,50 @@ function updateTable(){
   $('#polygons-table').html(table)
 }
 
-function addArea(){
-  if (polygon.length==0) return;
+function makeArea() {
+  if (polygon.length==0) return null;
 
   refreshArea()
   let temp_id=uuidv4();
   polygon.forEach(m => m.setMap(null))
-  areas.push({
+
+  let res = {
     id: -1,
     temp_id: temp_id,
     area: area,
     polygon: polygon,
     isAllowed: isAllowed()
-  })
-  let payload = {
-    mode: isAllowed() ? 'ALLOW' : 'DENY',
-    points: polygon.map(m => ({x: m.position.lat(), y: m.position.lng(), z: 0 })),
-    temp_id: temp_id
-  }
-  console.log("Adding area", payload)
-  mavros.setFence(payload)
+  };
+
   area = undefined
   polygon = []
-  updateTable()
+
+  return res;
+}
+function sendArea(area) {
+  let payload = {
+    mode: area.isAllowed ? 'ALLOW' : 'DENY',
+    points: area.polygon.map(m => ({x: m.position.lat(), y: m.position.lng(), z: 0 })),
+    temp_id: area.temp_id,
+    frame: 0,
+    frontendId
+  }
+  mavros.setFence(payload)
+}
+function addArea(){
+  let area=makeArea();
+  if (!area) return;
+
+  areas.push(area);
+  updateTable();
+
+  sendArea(area);
+}
+function addArea2(id){
+  let area=makeArea();
+  if (!area) return;
+
+  area.id=id;
+  areas.push(area);
+  updateTable();
 }

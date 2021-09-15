@@ -44,6 +44,9 @@ class AviotCopter {
     _onConnect(){
       this.socket.emit('connect_to_copter', this.copterId)
       this.socket.emit('connect_to_copter', this.fccsId)
+      setTimeout(() => {
+        this.socket.emit('fence', { copterId: this.fccsId, action: 'list', data:  { frontendId }})
+      }, 2000);
       this.socket.on(`/${this.fccsId}/battery`, this.__emit('battery'))
       this.socket.on(`/${this.fccsId}/state`, this.__emit('state'))
       this.socket.on(`/${this.fccsId}/global_position/global`, this.__emit('global_position'))
@@ -66,12 +69,29 @@ class AviotCopter {
         }
       });
       this.socket.on(`/${this.fccsId}/fence`, (arg) => {
-        areas.forEach(function(a, index){
-          if (a.temp_id==arg.data.temp_id) {
-            a.id=arg.res.polygon_id;
-          }
-        });
-        updateTable();
+        if (arg.data.frontendId!=frontendId)
+          return;
+        
+        if (arg.action=="set") {
+          areas.forEach(function(a, index){
+            if (a.temp_id==arg.data.temp_id) {
+              a.id=arg.res.polygon_id;
+            }
+          });
+          updateTable();
+        }
+        else if (arg.action=="get") {
+          arg.res.points.forEach((p, index) => {
+            addMarker(p.x,p.y);
+          });
+          addArea2(arg.data.fenceId);
+        }
+        else if (arg.action=="list") {
+          clearMap();
+          arg.res.polygon_ids.forEach((fenceId, index) => {
+            this.socket.emit('fence', { copterId: this.fccsId, action: 'get', data: { fenceId, frontendId } })
+          });
+        }
       });
       this._emit('connect', {status: 'connected'})
     }
@@ -116,10 +136,10 @@ class AviotCopter {
     }
     delFence(fenceId){
       console.log("Sending delete fence event")
-      this.socket.emit('fence', { copterId: this.fccsId, action: 'delete', data: { fenceId } })
+      this.socket.emit('fence', { copterId: this.fccsId, action: 'delete', data: { fenceId, frontendId } })
     }
     resetFence(){
       console.log("Sending reset fence event")
-      this.socket.emit('fence', { copterId: this.fccsId, action: 'reset'})
+      this.socket.emit('fence', { copterId: this.fccsId, action: 'reset', data: { frontendId } })
     }
   }
