@@ -1,6 +1,7 @@
 var listenerStatus = false
 var latitude, longitude, altitude
 var rtt=0;
+var circleTest=false;
 
 /**
  * Events:
@@ -76,6 +77,8 @@ function onFence(msg){
     updateTable();
   }
   else if (msg.action=="get") {
+    clearMap();
+
     msg.res.points.forEach((p, index) => {
       addMarker(p.x,p.y);
     });
@@ -203,6 +206,24 @@ function stopVideoRoom(){
   $('#videoroom').attr('onclick', 'startVideoRoom()')
   $('#videoroom').attr('class', 'btn btn-success')
 }
+function circleStart(){
+  circleTest=true;
+  $('#circle-start').addClass("d-none");
+  $('#circle-stop').removeClass("d-none");
+}
+function circleStop(){
+  circleTest=false;
+  direction = {
+    x: 0,
+    y: 0,
+    z: 0,
+    _x: 0,
+    _y: 0,
+    _z: 0
+  }
+  $('#circle-start').removeClass("d-none");
+  $('#circle-stop').addClass("d-none");
+}
 
 
 $('#armThrottle').click(armThrottle)
@@ -316,14 +337,26 @@ function release(e){
 }
 
 var lastMsg = direction
+var r=0,r2=0;
 setInterval(function(){
-  if(listenerStatus && publish){
-
-    if(lastMsg && lastMsg.x === 0 && lastMsg.y === 0 && lastMsg.z === 0 &&
-      direction.x === 0 && direction.y === 0 && direction.z === 0 ){
-      lastMsg = direction
-      return
+  if(listenerStatus && (publish || circleTest)){
+    if (!circleTest) {
+      if(lastMsg && lastMsg.x === 0 && lastMsg.y === 0 && lastMsg.z === 0 &&
+        direction.x === 0 && direction.y === 0 && direction.z === 0 ){
+        lastMsg = direction
+        return
+      }
     }
+    else {
+      r+=0.021;
+      r2+=0.0628;
+      if (r>=Math.PI*2) r-=Math.PI*2;
+      if (r2>=Math.PI*2) r2-=Math.PI*2;
+      direction.x=0.5*Math.cos(r);
+      direction.y=0.5*Math.sin(r);
+      direction.z=0.5*Math.sin(r2);
+    }
+
     //console.log('Publishing vel');
     const { x, y, z, _x, _y, _z} = direction
     mavros.cmdVel({x, y, z}, {x: _x, y: _y, z: _z})
