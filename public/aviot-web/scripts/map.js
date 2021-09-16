@@ -107,27 +107,31 @@ function clearMap() {
   polygon = []
   refreshArea()
 
-  areas.forEach(function(a, index){
+  /*areas.forEach(function(a, index){
     a.area.setMap(null);
   });
   areas=[];
-  updateTable();
+  updateTable();*/
 }
 function updateTable(){
+  if (areas.length==0) {
+    $('#polygons-table').html('<tr><td colspan="4" class="text-center">No Data</td></tr>');
+  }
+  else {
+    let table = ''
+    areas.forEach(function(a, index){
 
-  let table = ''
-  areas.forEach(function(a, index){
+      let td = [
+        '<td>'+ (a.id>=0?(a.id+1):"") +'</td>',
+        '<td>'+ a.polygon.length +'</td>',
+        '<td><span class="text-'+ (a.isAllowed ? 'success' : 'danger') + ' ">' + (a.isAllowed ? 'Allow' : 'Deny') + '</span></td>',
+        '<td><Button class="btn btn-sm btn-warning" onclick="removePolyline('+ index +')">remove</Button></td>'
+      ]
+      table += '<tr>' + td.reduce((acc, value) => acc + value, '') + '</tr>'
+    })
 
-    let td = [
-      '<td>'+ (a.id>=0?(a.id+1):"") +'</td>',
-      '<td>'+ a.polygon.length +'</td>',
-      '<td><span class="text-'+ (a.isAllowed ? 'success' : 'danger') + ' ">' + (a.isAllowed ? 'Allow' : 'Deny') + '</span></td>',
-      '<td><Button class="btn btn-sm btn-warning" onclick="removePolyline('+ index +')">remove</Button></td>'
-    ]
-    table += '<tr>' + td.reduce((acc, value) => acc + value, '') + '</tr>'
-  })
-
-  $('#polygons-table').html(table)
+    $('#polygons-table').html(table)
+  }
 }
 
 function makeArea() {

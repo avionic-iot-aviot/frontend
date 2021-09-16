@@ -20,6 +20,9 @@ mavros.on('connect', function(){
   $('#video').append('<video class="rounded centered" id="remotevideo" width="100%" height="100%" autoplay playsinline/>')
   setTimeout(() => {
     mavros.listFence(frontendId);
+    setInterval(() => {
+      mavros.listFence(frontendId);
+    }, 10000);
   }, 2000);
   setInterval(() => {
     rttTest();
@@ -80,8 +83,21 @@ function onFence(msg){
   }
   else if (msg.action=="list") {
     clearMap();
+
+    // remove areas that are not present in the fence list
+    areas.reduceRight(function(acc, a, index, object) {
+      if (!msg.res.polygon_ids.includes(a.id)) {
+        a.area.setMap(null);
+        object.splice(index,1);
+      }
+    },[]);
+    updateTable();
+
+    // send getFence command for only new areas in the fence list
+    let ids=areas.map((a)=>a.id);
     msg.res.polygon_ids.forEach((fenceId, index) => {
-      mavros.getFence(fenceId, frontendId);
+      if (!ids.includes(fenceId))
+        mavros.getFence(fenceId, frontendId);
     });
   }
 }
