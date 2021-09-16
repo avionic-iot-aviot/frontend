@@ -99,7 +99,7 @@ function removePolyline(index){
   console.log(removed)
   removed[0].area.setMap(null)
   updateTable();
-  mavros.delFence(removed[0].id)
+  mavros.delFence(removed[0].id,frontendId)
 
 }
 function clearMap() {
@@ -157,7 +157,7 @@ function sendArea(area) {
     temp_id: area.temp_id,
     frame: 0
   }
-  mavros.setFence(payload)
+  mavros.setFence(payload,frontendId)
 }
 function addArea(){
   let area=makeArea();

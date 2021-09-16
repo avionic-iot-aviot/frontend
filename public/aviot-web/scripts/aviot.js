@@ -41,9 +41,6 @@ class AviotCopter {
     _onConnect(){
       this.socket.emit('connect_to_copter', this.copterId)
       this.socket.emit('connect_to_copter', this.fccsId)
-      setTimeout(() => {
-        this.socket.emit('fence', { copterId: this.fccsId, action: 'list', data:  { frontendId }})
-      }, 2000);
       this.socket.on(`/${this.fccsId}/battery`, this.__emit('battery'))
       this.socket.on(`/${this.fccsId}/state`, this.__emit('state'))
       this.socket.on(`/${this.fccsId}/global_position/global`, this.__emit('global_position'))
@@ -75,7 +72,7 @@ class AviotCopter {
       console.log("Sending stop streaming")
       this.socket.emit('video_stream', {copterId: this.copterId, action: 'stop'})
     }
-    rttTest(){
+    rttTest(frontendId){
       console.log("Sending RTT test")
       this.socket.emit('rtt_test', {copterId: this.copterId, frontendId})
     }
@@ -88,16 +85,22 @@ class AviotCopter {
       this.socket.emit('video_room', {copterId: this.copterId, action: 'stop'})
     }
 
-    setFence(data){
+    setFence(data, frontendId){
       console.log("Sending set fence event")
       this.socket.emit('fence', { copterId: this.fccsId, action: 'set', data: { ...data, frontendId } })
     }
-    delFence(fenceId){
+    delFence(fenceId, frontendId){
       console.log("Sending delete fence event")
       this.socket.emit('fence', { copterId: this.fccsId, action: 'delete', data: { fenceId, frontendId } })
     }
-    resetFence(){
+    resetFence(frontendId){
       console.log("Sending reset fence event")
       this.socket.emit('fence', { copterId: this.fccsId, action: 'reset', data: { frontendId } })
+    }
+    listFence(frontendId) {
+      this.socket.emit('fence', { copterId: this.fccsId, action: 'list', data:  { frontendId }})
+    }
+    getFence(fenceId, frontendId) {
+      this.socket.emit('fence', { copterId: this.fccsId, action: 'get', data: { fenceId, frontendId } })
     }
   }

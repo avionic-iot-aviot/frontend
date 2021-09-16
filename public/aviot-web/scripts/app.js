@@ -18,6 +18,9 @@ var mavros = new AviotCopter(getQueryVariable('copter_id'), getQueryVariable('fc
 mavros.on('connect', function(){
   console.log('connected')
   $('#video').append('<video class="rounded centered" id="remotevideo" width="100%" height="100%" autoplay playsinline/>')
+  setTimeout(() => {
+    mavros.listFence(frontendId);
+  }, 2000);
   setInterval(() => {
     rttTest();
   }, 5000);
@@ -78,7 +81,7 @@ function onFence(msg){
   else if (msg.action=="list") {
     clearMap();
     msg.res.polygon_ids.forEach((fenceId, index) => {
-      this.socket.emit('fence', { copterId: this.fccsId, action: 'get', data: { fenceId, frontendId } })
+      mavros.getFence(fenceId, frontendId);
     });
   }
 }
@@ -147,7 +150,7 @@ function takeoff() {
 function rttTest() {
   rtt_ts1=Date.now()
   console.log('rtt_test: '+rtt_ts1);
-  mavros.rttTest()
+  mavros.rttTest(frontendId)
 }
 
 function land(){
