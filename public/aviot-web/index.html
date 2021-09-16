@@ -14,6 +14,18 @@
     height: 100%;
     max-width: 100%;
   }
+  .half-size {
+    width: 50%;
+    display: inline-block;
+  }
+  .align-middle {
+    vertical-align: middle;
+  }
+  .custom-label {
+    margin: 0px;
+    margin-right: 8px;
+    width: 64px;
+  }
 </style>
 
 <body>
@@ -28,27 +40,27 @@
 
         </div>
 
-        <div class="col-xl-6 col-xs-12">
+        <div class="col-xl-12 col-xs-12">
           <button class="btn btn-primary" id="armThrottle">ARM</button>
+          <button class="btn btn-warning" id="land" disabled>LAND</button>
         </div>
-        <div class="col-xl-6 col-xs-12 form" style="padding-top: 30px">
+        <div class="col-xl-12 col-xs-12 form" style="padding-top: 30px">
           <div class="form-group">
-            <label>Altitude</label>
-            <input id="altitude" class="form-control" type="number" min=10 max=100 value="40"></input>
+            <label class="align-middle custom-label">Altitude</label>
+            <input id="altitude" class="form-control half-size align-middle" type="number" min=10 max=100 value="40"></input>
+            <button class="btn btn-success align-middle" id="set-alt">SET ALTITUDE</button>
           </div>
           <div class="form-group">
-            <button class="btn btn-success" id="takeoff" disabled>TAKEOFF</button>
-            <button class="btn btn-warning" id="land" disabled>LAND</button>
+            <label class="align-middle custom-label">RTT</label>
+            <label id="rtt" class="align-middle custom-label"></label>
+          </div>
+          <div class="form-group">
             <button class="btn btn-success" id="streaming" disabled onclick="startStreaming()">START VIDEO
               STREAMING</button>
             <button class="btn btn-success" id="videoroom" onclick="startVideoRoom()">START VIDEO ROOM</button>
             <button class="btn btn-warning d-none" id="exit-video-room" onclick="exitVideoRoom()">LEAVE VIDEO
               ROOM</button>
             <button class="btn btn-warning d-none" id="mute-mic" onclick="mute()">MUTE MIC</button>
-          </div>
-          <div class="form-group">
-            <label>RTT</label>
-            <div id="rtt"></div>
           </div>
         </div>
 

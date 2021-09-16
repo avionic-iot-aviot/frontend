@@ -99,13 +99,13 @@ function onGlobalPosUpdate(msg){
 function onRelAltUpdate(msg){
   if(Math.round(msg) > 0){
     $('#land').attr('disabled', false)
-    $('#takeoff').attr('disabled', true)
+    //$('#set-alt').attr('disabled', true)
   }
   else if(Math.round(msg) === 0){
     $('#land').attr('disabled', true)
-    if(latitude && longitude){
-      $('#takeoff').attr('disabled', false)
-    }
+    //if(latitude && longitude){
+    //  $('#set-alt').attr('disabled', false)
+    //}
   }
   $('#rel-alt').html(Math.round(msg * 10) / 10)
 }
@@ -143,7 +143,7 @@ function armThrottle () {
   console.log('arming mavros');
   mavros.armThrottle()
 }
-function takeoff() {
+function setAlt() {
   console.log('taking off');
   mavros.takeoff(latitude, longitude, Number($('#altitude').val()))
 }
@@ -190,7 +190,7 @@ function stopVideoRoom(){
 
 
 $('#armThrottle').click(armThrottle)
-$('#takeoff').click(takeoff)
+$('#set-alt').click(setAlt)
 $('#land').click(land)
 
 
