@@ -10,9 +10,6 @@ class AviotCopter {
       this.socket = io(endpoint)
       this.socket.on('connect', this._onConnect)
       this.socket.on('error', this._onError)
-
-      this.rtt_sum=0
-      this.rtt_count=0
     }
 
     getCopterId(){
@@ -53,46 +50,8 @@ class AviotCopter {
       this.socket.on(`/${this.fccsId}/global_position/rel_alt`, this.__emit('relative_altitude'))
       this.socket.on(`/${this.copterId}/streaming`, this.__emit('streaming'))
       this.socket.on(`/${this.copterId}/video_room`, this.__emit('video_room'))
-      this.socket.on(`/${this.copterId}/rtt_resp`, (arg) => {
-        this.rtt_ts2=Date.now()
-        console.log('rtt_resp: '+this.rtt_ts2);
-
-        this.rtt_sum+=this.rtt_ts2-this.rtt_ts1;
-        this.rtt_count++;
-
-        if (this.rtt_count<10)
-          rttTest();
-        else {
-          console.log('avg: '+(this.rtt_sum/this.rtt_count));
-          this.rtt_sum=0
-          this.rtt_count=0
-        }
-      });
-      this.socket.on(`/${this.fccsId}/fence`, (arg) => {
-        if (arg.data.frontendId!=frontendId)
-          return;
-        
-        if (arg.action=="set") {
-          areas.forEach(function(a, index){
-            if (a.temp_id==arg.data.temp_id) {
-              a.id=arg.res.polygon_id;
-            }
-          });
-          updateTable();
-        }
-        else if (arg.action=="get") {
-          arg.res.points.forEach((p, index) => {
-            addMarker(p.x,p.y);
-          });
-          addArea2(arg.data.fenceId);
-        }
-        else if (arg.action=="list") {
-          clearMap();
-          arg.res.polygon_ids.forEach((fenceId, index) => {
-            this.socket.emit('fence', { copterId: this.fccsId, action: 'get', data: { fenceId, frontendId } })
-          });
-        }
-      });
+      this.socket.on(`/${this.copterId}/rtt_resp`, this.__emit('rtt_resp'))
+      this.socket.on(`/${this.fccsId}/fence`, this.__emit('fence'))
       this._emit('connect', {status: 'connected'})
     }
     armThrottle(){
@@ -117,9 +76,8 @@ class AviotCopter {
       this.socket.emit('video_stream', {copterId: this.copterId, action: 'stop'})
     }
     rttTest(){
-      this.rtt_ts1=Date.now()
-      console.log('rtt_test: '+this.rtt_ts1);
-      this.socket.emit('rtt_test', {copterId: this.copterId})
+      console.log("Sending RTT test")
+      this.socket.emit('rtt_test', {copterId: this.copterId, frontendId})
     }
     startVideoRoom(){
       console.log("Sending start video room")
@@ -132,7 +90,7 @@ class AviotCopter {
 
     setFence(data){
       console.log("Sending set fence event")
-      this.socket.emit('fence', { copterId: this.fccsId, action: 'set', data })
+      this.socket.emit('fence', { copterId: this.fccsId, action: 'set', data: { ...data, frontendId } })
     }
     delFence(fenceId){
       console.log("Sending delete fence event")

@@ -37,7 +37,6 @@
             <input id="altitude" class="form-control" type="number" min=10 max=100 value="40"></input>
           </div>
           <div class="form-group">
-            <button class="btn btn-success" id="rtt-test">RTT TEST</button>
             <button class="btn btn-success" id="takeoff" disabled>TAKEOFF</button>
             <button class="btn btn-warning" id="land" disabled>LAND</button>
             <button class="btn btn-success" id="streaming" disabled onclick="startStreaming()">START VIDEO
@@ -46,6 +45,10 @@
             <button class="btn btn-warning d-none" id="exit-video-room" onclick="exitVideoRoom()">LEAVE VIDEO
               ROOM</button>
             <button class="btn btn-warning d-none" id="mute-mic" onclick="mute()">MUTE MIC</button>
+          </div>
+          <div class="form-group">
+            <label>RTT</label>
+            <div id="rtt"></div>
           </div>
         </div>
 

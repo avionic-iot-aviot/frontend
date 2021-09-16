@@ -155,8 +155,7 @@ function sendArea(area) {
     mode: area.isAllowed ? 'ALLOW' : 'DENY',
     points: area.polygon.map(m => ({x: m.position.lat(), y: m.position.lng(), z: 0 })),
     temp_id: area.temp_id,
-    frame: 0,
-    frontendId
+    frame: 0
   }
   mavros.setFence(payload)
 }

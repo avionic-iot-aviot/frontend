@@ -1,6 +1,6 @@
 var listenerStatus = false
 var latitude, longitude, altitude
-
+var rtt=0;
 
 /**
  * Events:
@@ -18,6 +18,9 @@ var mavros = new AviotCopter(getQueryVariable('copter_id'), getQueryVariable('fc
 mavros.on('connect', function(){
   console.log('connected')
   $('#video').append('<video class="rounded centered" id="remotevideo" width="100%" height="100%" autoplay playsinline/>')
+  setInterval(() => {
+    rttTest();
+  }, 5000);
 })
 mavros.on('state', onStateUpdate)
 mavros.on('battery', updateBatteryInfo)
@@ -26,6 +29,8 @@ mavros.on('relative_altitude', onRelAltUpdate)
 mavros.on('error', onError)
 mavros.on('streaming', onStreaming)
 mavros.on('video_room', onVideoRoom)
+mavros.on('rtt_resp', onRttResp)
+mavros.on('fence', onFence)
 
 function onError(err){
   //handle errors
@@ -40,6 +45,44 @@ function onVideoRoom(msg){
   console.log(msg)
   startJanusVideoRoom(msg, $('#remotevideo'))
 }
+function onRttResp(msg){
+  if (msg.frontendId!=frontendId)
+    return;
+
+  rtt_ts2=Date.now()
+  console.log('rtt_resp: '+rtt_ts2);
+
+  rtt=rtt_ts2-rtt_ts1;
+  console.log('rtt: '+(rtt));
+
+  $('#rtt').html(rtt);
+}
+function onFence(msg){
+  if (msg.data.frontendId!=frontendId)
+    return;
+
+  if (msg.action=="set") {
+    areas.forEach(function(a, index){
+      if (a.temp_id==msg.data.temp_id) {
+        a.id=msg.res.polygon_id;
+      }
+    });
+    updateTable();
+  }
+  else if (msg.action=="get") {
+    msg.res.points.forEach((p, index) => {
+      addMarker(p.x,p.y);
+    });
+    addArea2(msg.data.fenceId);
+  }
+  else if (msg.action=="list") {
+    clearMap();
+    msg.res.polygon_ids.forEach((fenceId, index) => {
+      this.socket.emit('fence', { copterId: this.fccsId, action: 'get', data: { fenceId, frontendId } })
+    });
+  }
+}
+
 function onGlobalPosUpdate(msg){
   latitude = msg.latitude
   longitude = msg.longitude
@@ -51,7 +94,7 @@ function onGlobalPosUpdate(msg){
 }
 
 function onRelAltUpdate(msg){
-  if(Math.round(msg) > 1){
+  if(Math.round(msg) > 0){
     $('#land').attr('disabled', false)
     $('#takeoff').attr('disabled', true)
   }
@@ -102,6 +145,8 @@ function takeoff() {
   mavros.takeoff(latitude, longitude, Number($('#altitude').val()))
 }
 function rttTest() {
+  rtt_ts1=Date.now()
+  console.log('rtt_test: '+rtt_ts1);
   mavros.rttTest()
 }
 
@@ -143,7 +188,6 @@ function stopVideoRoom(){
 
 $('#armThrottle').click(armThrottle)
 $('#takeoff').click(takeoff)
-$('#rtt-test').click(rttTest)
 $('#land').click(land)
 
 
