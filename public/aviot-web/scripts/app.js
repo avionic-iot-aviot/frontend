@@ -215,7 +215,7 @@ go_down_cmd (0.0,0.0,5.0);
 */
 let publish = false
 function press(e){
-  if (e.keyCode === 38 /* up */ || e.keyCode === 87 /* w */ || e.keyCode === 90 /* z */){
+  if (e.keyCode === 38 /* up */ || e.keyCode === 87 /* w */){
     direction = {
       x: 0,
       y: 0,
@@ -245,7 +245,7 @@ function press(e){
       _z: 0
     }
   }
-  if (e.keyCode === 37 /* left */ || e.keyCode === 65 /* a */ || e.keyCode === 81 /* q */){
+  if (e.keyCode === 37 /* left */ || e.keyCode === 65 /* a */){
     direction = {
       x: -0.5,
       y: 0,
@@ -255,7 +255,7 @@ function press(e){
       _z: 0
     }
   }
-  if (e.keyCode === 32 /* space */ || e.keyCode === 16 /* shift */){
+  if (e.keyCode === 84 /* T */){
     direction = {
       x: 0,
       y: 0.5,
@@ -265,7 +265,7 @@ function press(e){
       _z: 0
     }
   }
-  if (e.keyCode === 17 /* ctrl */){
+  if (e.keyCode === 71 /* G */){
     direction = {
       x: 0,
       y: -0.5,
