@@ -2,6 +2,7 @@ var listenerStatus = false
 var latitude, longitude, altitude
 var rtt=0;
 var circleTest=false;
+var rotation=0;
 
 /**
  * Events:
@@ -20,9 +21,11 @@ mavros.on('connect', function(){
   console.log('connected')
   $('#video').append('<video class="rounded centered" id="remotevideo" width="100%" height="100%" autoplay playsinline/>')
   setTimeout(() => {
+    mavros.streamRate(0,1,true);
     mavros.listFence(frontendId);
     setInterval(() => {
-      mavros.listFence(frontendId);
+      if (polygon.length==0)
+        mavros.listFence(frontendId);
     }, 10000);
   }, 2000);
   setInterval(() => {
@@ -33,6 +36,7 @@ mavros.on('state', onStateUpdate)
 mavros.on('battery', updateBatteryInfo)
 mavros.on('global_position', onGlobalPosUpdate)
 mavros.on('relative_altitude', onRelAltUpdate)
+mavros.on('compass_hdg', onCompassUpdate)
 mavros.on('error', onError)
 mavros.on('streaming', onStreaming)
 mavros.on('video_room', onVideoRoom)
@@ -85,11 +89,9 @@ function onFence(msg){
     addArea2(msg.data.fenceId);
   }
   else if (msg.action=="list") {
-    clearMap();
-
     // remove areas that are not present in the fence list
     areas.reduceRight(function(acc, a, index, object) {
-      if (!msg.res.polygon_ids.includes(a.id)) {
+      if (a.id>=0 && !msg.res.polygon_ids.includes(a.id)) {
         a.area.setMap(null);
         object.splice(index,1);
       }
@@ -112,7 +114,7 @@ function onGlobalPosUpdate(msg){
   $('#lat').html(latitude)
   $('#lng').html(longitude)
   $('#alt').html(Math.round(altitude * 10) / 10)
-  updateDronePos(latitude,longitude,getQueryVariable('copter_id'),true)
+  updateDronePos(latitude,longitude,getQueryVariable('copter_id'),true,rotation)
 }
 
 function onRelAltUpdate(msg){
@@ -128,9 +130,13 @@ function onRelAltUpdate(msg){
   }
   $('#rel-alt').html(Math.round(msg * 10) / 10)
 }
+function onCompassUpdate(msg) {
+  rotation=msg;
+}
 function onStateUpdate(data) {
   let className = data.armed ? 'success' : 'danger'
   var info = "Status: " + (data.armed ? 'ARMED' : 'DISARMED')
+  info+="&nbsp;&nbsp;&nbsp;Mode: "+data.mode;
   info = '<div class="alert alert-' + className +'" role="alert">'+ info +'</div>'
   $('#status').html(info + "\n")
   if (data.armed && !listenerStatus){
@@ -255,8 +261,8 @@ function press(e){
   if (e.keyCode === 38 /* up */ || e.keyCode === 87 /* w */){
     direction = {
       x: 0,
-      y: 0,
-      z: -0.5,
+      y: -0.5,
+      z: 0,
       _x: 0,
       _y: 0,
       _z: 0
@@ -275,8 +281,8 @@ function press(e){
   if (e.keyCode === 40 /* down */ || e.keyCode === 83 /* s */){
     direction = {
       x: 0,
-      y: 0,
-      z: 0.5,
+      y: 0.5,
+      z: 0,
       _x: 0,
       _y: 0,
       _z: 0
@@ -295,8 +301,8 @@ function press(e){
   if (e.keyCode === 84 /* T */){
     direction = {
       x: 0,
-      y: 0.5,
-      z: 0,
+      y: 0,
+      z: -0.5,
       _x: 0,
       _y: 0,
       _z: 0
@@ -305,8 +311,8 @@ function press(e){
   if (e.keyCode === 71 /* G */){
     direction = {
       x: 0,
-      y: -0.5,
-      z: 0,
+      y: 0,
+      z: 0.5,
       _x: 0,
       _y: 0,
       _z: 0

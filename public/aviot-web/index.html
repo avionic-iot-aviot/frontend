@@ -24,7 +24,7 @@
   .custom-label {
     margin: 0px;
     margin-right: 8px;
-    width: 72px;
+    width: 80px;
   }
 </style>
 
@@ -63,9 +63,8 @@
             <button class="btn btn-warning d-none" id="mute-mic" onclick="mute()">MUTE MIC</button>
           </div>
           <div class="form-group">
-            <label class="align-middle custom-label">Circle test</label>
-            <button class="btn btn-success align-middle" id="circle-start" onclick="circleStart()">START</button>
-            <button class="btn btn-success align-middle d-none" id="circle-stop" onclick="circleStop()">STOP</button>
+            <button class="btn btn-success" id="circle-start" onclick="circleStart()">START CIRCLE TEST</button>
+            <button class="btn btn-success d-none" id="circle-stop" onclick="circleStop()">STOP CIRCLE TEST</button>
           </div>
         </div>
 
@@ -96,6 +95,7 @@
       <div class="col-xs-12 col-xl-6 p-10">
         <div class="col-xs-12 mb-10">
 
+          <button class="btn btn-warning" onclick="reset()">RESET</button>
           <button class="btn btn-warning" onclick="removeMarkers()">REMOVE MARKERS</button>
           <button class="btn btn-success" onclick="addArea()">ADD AREA</button>
           <div class="form-check">

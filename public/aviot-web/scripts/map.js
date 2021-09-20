@@ -54,8 +54,8 @@ function onClick(evt) {
   addMarker(evt.latLng.lat(),evt.latLng.lng());
   refreshArea()
 }
-function updateDronePos(lat, lng, droneId, center){
-  if(droneMarker === null){
+function updateDronePos(lat, lng, droneId, center, rotation){
+  if(droneMarker === null) {
     droneMarker = new google.maps.Marker({
       position: {
         lat: lat,
@@ -66,6 +66,13 @@ function updateDronePos(lat, lng, droneId, center){
       title: droneId,
     })
   }
+  
+  droneMarker.setIcon({
+    path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+    scale: 7,
+    rotation: rotation
+  });
+
   droneMarker.setPosition(new google.maps.LatLng(lat, lng))
   center && setCenter(lat, lng)
 }
@@ -106,12 +113,6 @@ function clearMap() {
   polygon.forEach((m) => m.setMap(null))
   polygon = []
   refreshArea()
-
-  /*areas.forEach(function(a, index){
-    a.area.setMap(null);
-  });
-  areas=[];
-  updateTable();*/
 }
 function updateTable(){
   if (areas.length==0) {
@@ -178,5 +179,14 @@ function addArea2(id){
 
   area.id=id;
   areas.push(area);
+  updateTable();
+}
+function reset(){
+  mavros.resetFence(frontendId)
+  
+  areas.forEach(function(a, index){
+    a.area.setMap(null);
+  });
+  areas=[];
   updateTable();
 }
