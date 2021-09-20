@@ -87,11 +87,11 @@ class AviotCopter {
     }
     streamRate(stream_id, message_rate, on_off){
       console.log("Sending stream rate")
-      this.socket.emit('stream_rate', {copterId: this.fccsId, data: {stream_id, message_rate, on_off} })
+      this.socket.emit('stream_rate', {copterId: this.fccsId, data: { stream_id, message_rate, on_off } })
     }
-    mode(){
+    mode(base_mode, custom_mode){
       console.log("Sending mode")
-      this.socket.emit('mode', {copterId: this.fccsId, data: {} })
+      this.socket.emit('mode', {copterId: this.fccsId, data: { base_mode, custom_mode } })
     }
 
     setFence(data, frontendId){

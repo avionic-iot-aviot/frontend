@@ -3,6 +3,8 @@ var latitude, longitude, altitude
 var rtt=0;
 var circleTest=false;
 var rotation=0;
+var mode=-1;
+var listInterval=null;
 
 /**
  * Events:
@@ -22,11 +24,7 @@ mavros.on('connect', function(){
   $('#video').append('<video class="rounded centered" id="remotevideo" width="100%" height="100%" autoplay playsinline/>')
   setTimeout(() => {
     mavros.streamRate(0,1,true);
-    mavros.listFence(frontendId);
-    setInterval(() => {
-      if (polygon.length==0)
-        mavros.listFence(frontendId);
-    }, 10000);
+    doListFence();
   }, 2000);
   setInterval(() => {
     rttTest();
@@ -46,6 +44,19 @@ mavros.on('fence', onFence)
 function onError(err){
   //handle errors
   console.error(err)
+}
+
+function doListFence() {
+  if (listInterval) {
+    clearInterval(listInterval);
+    listInterval=null;
+  }
+  if (polygon.length==0)
+    mavros.listFence(frontendId);
+  listInterval=setInterval(() => {
+    if (polygon.length==0)
+      mavros.listFence(frontendId);
+  }, 10000);
 }
 
 function onStreaming(msg){
@@ -73,12 +84,13 @@ function onFence(msg){
     return;
 
   if (msg.action=="set") {
-    areas.forEach(function(a, index){
+    /*areas.forEach(function(a, index){
       if (a.temp_id==msg.data.temp_id) {
         a.id=msg.res.polygon_id;
       }
     });
-    updateTable();
+    updateTable();*/
+    doListFence();
   }
   else if (msg.action=="get") {
     clearMap();
@@ -134,6 +146,7 @@ function onCompassUpdate(msg) {
   rotation=msg;
 }
 function onStateUpdate(data) {
+  mode=data.mode;
   let className = data.armed ? 'success' : 'danger'
   var info = "Status: " + (data.armed ? 'ARMED' : 'DISARMED')
   info+="&nbsp;&nbsp;&nbsp;Mode: "+data.mode;
@@ -180,6 +193,9 @@ function rttTest() {
 
 function land(){
   mavros.land(latitude, longitude, 0)
+}
+function changeMode(){
+  mavros.mode(81,'GUIDED')
 }
 
 
@@ -235,6 +251,7 @@ function circleStop(){
 $('#armThrottle').click(armThrottle)
 $('#set-alt').click(setAlt)
 $('#land').click(land)
+$('#change-mode').click(changeMode)
 
 
 document.addEventListener('keydown',press)
@@ -296,6 +313,26 @@ function press(e){
       _x: 0,
       _y: 0,
       _z: 0
+    }
+  }
+  if (e.keyCode === 81 /* rotate left */){
+    direction = {
+      x: 0,
+      y: 0,
+      z: 0,
+      _x: 0,
+      _y: 0,
+      _z: -0.5
+    }
+  }
+  if (e.keyCode === 69 /* rotate right */){
+    direction = {
+      x: 0,
+      y: 0,
+      z: 0,
+      _x: 0,
+      _y: 0,
+      _z: 0.5
     }
   }
   if (e.keyCode === 84 /* T */){

@@ -180,6 +180,18 @@ export default {
             ];
             break;
           }
+          case "camera": {
+            item.actions = [
+              {
+                actionType: "custom",
+                icon: "gps_fixed",
+                callback: () => {
+                  window.open(window.location.protocol+"//"+item.ip+"/", '_blank');
+                },
+              }
+            ];
+            break;
+          }
           default: {
             item.actions = [
               {

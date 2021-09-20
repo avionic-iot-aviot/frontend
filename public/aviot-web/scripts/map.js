@@ -168,9 +168,7 @@ function addArea(){
   let area=makeArea();
   if (!area) return;
 
-  areas.push(area);
-  updateTable();
-
+  area.area.setMap(null);
   sendArea(area);
 }
 function addArea2(id){
