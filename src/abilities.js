@@ -10,6 +10,7 @@ export default function defineAbilitiesFor() {
         can('route', 'Devices');
         can('route', 'Drone');
         can('route', 'Controller');
+        can('route', 'Tetracam');
         break;
     }
   });

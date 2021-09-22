@@ -39,6 +39,7 @@ Vue.prototype.$dbapp_url=window.location.protocol+"//"+tenantId+".aviot.it/dbapp
 Vue.prototype.$wss_url=window.location.protocol+"//wss."+tenantId+".aviot.it";
 Vue.prototype.$controller_url=window.location.protocol+"//controller."+tenantId+".aviot.it";
 Vue.prototype.$janus_url=window.location.protocol+"//"+tenantId+".aviot.it/janus";
+Vue.prototype.$tetracam_url=window.location.protocol+"//tetracam."+tenantId+".aviot.it/aviot/main7.php";
 
 new Vue({
   router,

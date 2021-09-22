@@ -184,11 +184,9 @@ export default {
           case "camera": {
             item.actions = [
               {
-                actionType: "custom",
+                actionType: "router-link",
+                namedRoot: "Tetracam",
                 icon: "gps_fixed",
-                callback: () => {
-                  window.open(window.location.protocol+"//tetracam."+config.tenantId+".aviot.it/aviot/main7.php", '_blank');
-                },
               }
             ];
             break;
