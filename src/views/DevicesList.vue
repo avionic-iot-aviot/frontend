@@ -59,7 +59,6 @@ import helper from "@/mixins/helper";
 import DeviceForm from "@/components/forms/DeviceForm";
 const io = require('socket.io-client');
 import { v4 as uuidv4 } from 'uuid';
-import config from "../config.js"
 
 export default {
   name: 'DevicesList',
