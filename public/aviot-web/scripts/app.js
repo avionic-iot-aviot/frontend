@@ -65,7 +65,9 @@ console.log(msg)
 }
 function onVideoRoom(msg){
   console.log(msg)
-  startJanusVideoRoom(msg, $('#remotevideo'))
+  startJanusVideoRoom(msg, $('#remotevideo'), () => {
+    mavros.stopVideoRoom()
+  })
 }
 function onRttResp(msg){
   if (msg.frontendId!=frontendId)
@@ -217,13 +219,14 @@ function stopStreaming(){
 
 function startVideoRoom(){
   mavros.startVideoRoom()
+
   $('#videoroom').html('STOP VIDEO ROOM')
   $('#videoroom').attr('onclick', 'stopVideoRoom()')
   $('#videoroom').attr('class', 'btn btn-warning')
 }
 function stopVideoRoom(){
-  mavros.stopVideoRoom()
   stopJanusVideoRoom()
+  
   $('#videoroom').html('START VIDEO ROOM')
   $('#videoroom').attr('onclick', 'startVideoRoom()')
   $('#videoroom').attr('class', 'btn btn-success')

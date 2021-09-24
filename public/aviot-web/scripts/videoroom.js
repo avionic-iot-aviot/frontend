@@ -7,51 +7,39 @@ Janus.init({
 var videoRoomEl, roomName, roomPin, janusVr, sfutest, myid, mypvtid
 var feeds = [], mystream = null
 var bitrateTimer = [];
+var msg, videoElement;
 
 function onInitVrJanus(){
   Janus.log("Janus videoroom init ok!")
   $('#videoroom').attr('disabled', false)
-  janusVr = new Janus({
-    server: JANUS_SERVER_ENDPOINT,
-    success: onCreateJanusVrSuccess,
-    error: onCreateJanusVrError,
-    destroyed: onJanusVrDestroyed
-  })
 }
 
 function stopJanusVideoRoom(){
   if(janusVr !== null){
     unpublishOwnFeed()
-    //janusVr.destroy()
-    //janusVr = null
+    janusVr.destroy()
+    janusVr = null
   }
 }
 
-function startJanusVideoRoom (msg, videoElement){
-  videoRoomEl = videoElement
-  roomName = msg.videoroom_name
-  roomPin = msg.videoroom_pin
-  var register = {
-    request: "join",
-    room: roomName,
-    pin: ""+roomPin,
-    secret: msg.videoroom_secret,
-    ptype: "publisher",
-    display: 'username'
-  };
-  myusername = 'username';
-  console.log("Joining")
-  sfutest.send({ message: register });
+function startJanusVideoRoom (_msg, _videoElement, _cb){
+  msg=_msg;
+  videoElement=_videoElement;
 
+  janusVr = new Janus({
+    server: JANUS_SERVER_ENDPOINT,
+    success: onCreateJanusVrSuccess,
+    error: onCreateJanusVrError,
+    destroyed: () => {
+      _cb();
+    }
+  })
 }
 
 function onCreateJanusVrError(error){
   Janus.log(error)
 }
 
-function onJanusVrDestroyed(){
-  console.log("Janus vr destroyed")
-}
 function onCreateJanusVrSuccess() {
   janusVr.attach({
     plugin: 'janus.plugin.videoroom',
@@ -78,6 +66,21 @@ function onCreateJanusVrSuccess() {
 function onVrAttachSuccess(pluginHandle){
   sfutest = pluginHandle
   Janus.log("Plugin attached! (" + sfutest.getPlugin() + ", id=" + sfutest.getId() + ")");
+
+  videoRoomEl = videoElement
+  roomName = msg.videoroom_name
+  roomPin = msg.videoroom_pin
+  var register = {
+    request: "join",
+    room: roomName,
+    pin: ""+roomPin,
+    secret: msg.videoroom_secret,
+    ptype: "publisher",
+    display: 'username'
+  };
+  myusername = 'username';
+  console.log("Joining")
+  sfutest.send({ message: register });
 }
 function onVrAttachError(error){
   Janus.error("  -- Error attaching plugin...", error);
@@ -135,9 +138,9 @@ function onJoin(msg){
 }
 
 function onVideRoomError(error){
-  if(error.error_code === 429){
-    alert("Room not found")
-  }
+  //if(error.error_code === 429){
+  //  alert("Room not found")
+  //}
   console.error(error.error)
 }
 
@@ -321,7 +324,6 @@ function newRemoteFeed(id, display, audio, video) {
           $('#videoremote-container').append('<div id="remotevideo-container'+ remoteFeed.rfindex + '"><video class="rounded centered relative" id="remotevideo' + remoteFeed.rfindex + '" width="100%" height="100%" autoplay playsinline/></div>')
           $("#remotevideo"+remoteFeed.rfindex).bind("playing")          
         }
-        
 
 
         Janus.attachMediaStream($('#remotevideo'+remoteFeed.rfindex).get(0), stream);
@@ -401,7 +403,7 @@ function unpublishOwnFeed() {
   var unpublish = { request: "unpublish" };
   sfutest.send({ message: unpublish });
   $('#videolocal').html('');
-  
+  $('#videoremote-container').html('');
 }
 
 // Helpers to create Simulcast-related UI, if enabled
