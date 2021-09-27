@@ -280,16 +280,6 @@ let publish = false
 function press(e){
   if (e.keyCode === 38 /* up */ || e.keyCode === 87 /* w */){
     direction = {
-      x: 0,
-      y: -0.5,
-      z: 0,
-      _x: 0,
-      _y: 0,
-      _z: 0
-    }
-  }
-  if (e.keyCode === 39 /* right */ || e.keyCode === 68 /* d */){
-    direction = {
       x: 0.5,
       y: 0,
       z: 0,
@@ -298,7 +288,7 @@ function press(e){
       _z: 0
     }
   }
-  if (e.keyCode === 40 /* down */ || e.keyCode === 83 /* s */){
+  if (e.keyCode === 39 /* right */ || e.keyCode === 68 /* d */){
     direction = {
       x: 0,
       y: 0.5,
@@ -308,10 +298,20 @@ function press(e){
       _z: 0
     }
   }
-  if (e.keyCode === 37 /* left */ || e.keyCode === 65 /* a */){
+  if (e.keyCode === 40 /* down */ || e.keyCode === 83 /* s */){
     direction = {
       x: -0.5,
       y: 0,
+      z: 0,
+      _x: 0,
+      _y: 0,
+      _z: 0
+    }
+  }
+  if (e.keyCode === 37 /* left */ || e.keyCode === 65 /* a */){
+    direction = {
+      x: 0,
+      y: -0.5,
       z: 0,
       _x: 0,
       _y: 0,
@@ -388,7 +388,9 @@ setInterval(function(){
   if(listenerStatus && (publish || circleTest)){
     if (!circleTest) {
       if(lastMsg && lastMsg.x === 0 && lastMsg.y === 0 && lastMsg.z === 0 &&
-        direction.x === 0 && direction.y === 0 && direction.z === 0 ){
+        lastMsg._x === 0 && lastMsg._y === 0 && lastMsg._z === 0 &&
+        direction.x === 0 && direction.y === 0 && direction.z === 0 &&
+        direction._x === 0 && direction._y === 0 && direction._z === 0 ){
         lastMsg = direction
         return
       }
