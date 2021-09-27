@@ -219,14 +219,21 @@ $(document).ready(function () {
                     if ($('#stream .no-video-container').length === 0) {
                       $('#stream').append(
                         '<div class="no-video-container">' +
-                        '<i class="fa fa-video-camera fa-5 no-video-icon"></i>' +
-                        '<span class="no-video-text">No remote video available</span>' +
+                        // '<i class="fa fa-video-camera fa-5 no-video-icon"></i>' +
+                        // '<span class="no-video-text">No remote video available</span>' +
                         '</div>');
                     }
                   } else {
                     $('#stream .no-video-container').remove();
                     $('#remotevideostreaming').removeClass('hide').show();
                   }
+                  if($('#audioStreamingVolume').length == 0)
+                    $('#stream').append(
+                      '<div>' +
+                      '<i class="fa fa-volume-down fa-5"></i> ' +
+                      '<input type="range" min="0" max="100" value="100" class="slider" id="audioStreamingVolume" onclick="document.querySelector(\'#remotevideostreaming\').volume = this.value/100;"> ' +
+                      '<i class="fa fa-volume-up fa-5"></i>' +
+                      '</div>');
                   if (!addButtons)
                     return;
                   if (videoTracks && videoTracks.length &&

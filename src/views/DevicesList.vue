@@ -59,7 +59,6 @@ import helper from "@/mixins/helper";
 import DeviceForm from "@/components/forms/DeviceForm";
 const io = require('socket.io-client');
 import { v4 as uuidv4 } from 'uuid';
-import config from "../config.js"
 
 export default {
   name: 'DevicesList',
@@ -184,11 +183,9 @@ export default {
           case "camera": {
             item.actions = [
               {
-                actionType: "custom",
+                actionType: "router-link",
+                namedRoot: "Tetracam",
                 icon: "gps_fixed",
-                callback: () => {
-                  window.open(window.location.protocol+"//tetracam."+config.tenantId+".aviot.it/aviot/main7.php", '_blank');
-                },
               }
             ];
             break;

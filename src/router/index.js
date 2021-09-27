@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import DevicesList from '../views/DevicesList.vue'
 import Drone from '../views/Drone.vue'
 import Controller from '../views/Controller.vue'
+import Tetracam from '../views/Tetracam.vue'
 import defineAbilitiesFor from '@/abilities'
 import i18n from "@/i18n";
 
@@ -28,6 +29,11 @@ const routes = [
     path: '/sensors',
     name: 'Controller',
     component: Controller
+  },
+  {
+    path: '/tetracam',
+    name: 'Tetracam',
+    component: Tetracam
   }
 ]
 
