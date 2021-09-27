@@ -227,12 +227,13 @@ $(document).ready(function () {
                     $('#stream .no-video-container').remove();
                     $('#remotevideostreaming').removeClass('hide').show();
                   }
-                  $('#stream').append(
-                    '<div>' +
-                    '<i class="fa fa-volume-down fa-5"></i> ' +
-                    '<input type="range" min="0" max="100" value="100" class="slider" id="audioStreamingVolume" onclick="document.querySelector(\'#remotevideostreaming\').volume = this.value/100;"> ' +
-                    '<i class="fa fa-volume-up fa-5"></i>' +
-                    '</div>');
+                  if($('#audioStreamingVolume').length == 0)
+                    $('#stream').append(
+                      '<div>' +
+                      '<i class="fa fa-volume-down fa-5"></i> ' +
+                      '<input type="range" min="0" max="100" value="100" class="slider" id="audioStreamingVolume" onclick="document.querySelector(\'#remotevideostreaming\').volume = this.value/100;"> ' +
+                      '<i class="fa fa-volume-up fa-5"></i>' +
+                      '</div>');
                   if (!addButtons)
                     return;
                   if (videoTracks && videoTracks.length &&

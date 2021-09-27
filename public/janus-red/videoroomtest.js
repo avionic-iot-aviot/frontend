@@ -51,14 +51,14 @@ else
 	server = "https://" + window.location.hostname + ":8089/janus";
 
 // ANDS modified
-server="https://" + window.location.hostname + "/janus/janus";
+server="http://" + window.location.hostname + ":8088/janus";
 
 var janus = null;
 var sfutest = null;
 var opaqueId = "videoroomtest-"+Janus.randomString(12);
 
 var myroom = 1234;
-var mypin = "adminpwd";
+var mypin = "";
 var myusername = null;
 var myid = null;
 var mystream = null;
