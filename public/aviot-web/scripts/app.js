@@ -187,7 +187,7 @@ function armThrottle () {
 function setAlt() {
   console.log('taking off');
   altitude_from_input = Number($('#altitude').val());
-  mavros.takeoff(latitude, longitude, altitude + altitude_from_input + relative_altitude);
+  mavros.takeoff(latitude, longitude, altitude + altitude_from_input);
 }
 function rttTest() {
   rtt_ts1=Date.now()
