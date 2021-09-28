@@ -100,7 +100,7 @@ function onFence(msg){
     msg.res.points.forEach((p, index) => {
       addMarker(p.x,p.y);
     });
-    addArea2(msg.data.fenceId);
+    addArea2(msg.data.fenceId,msg.res.mode);
   }
   else if (msg.action=="list") {
     // remove areas that are not present in the fence list

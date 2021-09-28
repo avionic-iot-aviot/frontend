@@ -48,11 +48,11 @@ function addMarker(lat,lng) {
   
 }
 function onDrag(evt) {
-  refreshArea();
+  refreshArea(isAllowed());
 }
 function onClick(evt) {
   addMarker(evt.latLng.lat(),evt.latLng.lng());
-  refreshArea()
+  refreshArea(isAllowed())
 }
 function updateDronePos(lat, lng, droneId, center, rotation){
   if(droneMarker === null) {
@@ -79,13 +79,13 @@ function updateDronePos(lat, lng, droneId, center, rotation){
 function setCenter(lat, lng){
   map.setCenter(new google.maps.LatLng(lat, lng))
 }
-function refreshArea(){
+function refreshArea(isAllowed){
   if(area){
     area.setMap(null)
   }
   area = new google.maps.Polygon({
-    fillColor: isAllowed() ? colors.allow.background : colors.deny.background,
-    strokeColor: isAllowed() ? colors.allow.stroke : colors.deny.stroke,
+    fillColor: isAllowed ? colors.allow.background : colors.deny.background,
+    strokeColor: isAllowed ? colors.allow.stroke : colors.deny.stroke,
     paths: polygon.map(m => new google.maps.LatLng(m.position.lat(), m.position.lng()))
   });
   area.setMap(map)
@@ -96,7 +96,7 @@ function addPolygon(){
 function removeMarkers(){
   polygon.forEach((m) => m.setMap(null))
   polygon = []
-  refreshArea()
+  refreshArea(isAllowed())
 }
 
 function removePolyline(index){
@@ -112,7 +112,7 @@ function removePolyline(index){
 function clearMap() {
   polygon.forEach((m) => m.setMap(null))
   polygon = []
-  refreshArea()
+  refreshArea(isAllowed())
 }
 function updateTable(){
   if (areas.length==0) {
@@ -135,19 +135,19 @@ function updateTable(){
   }
 }
 
-function makeArea() {
+function makeArea(id,isAllowed) {
   if (polygon.length==0) return null;
 
-  refreshArea()
+  refreshArea(isAllowed)
   let temp_id=uuidv4();
   polygon.forEach(m => m.setMap(null))
 
   let res = {
-    id: -1,
+    id,
     temp_id: temp_id,
     area: area,
     polygon: polygon,
-    isAllowed: isAllowed()
+    isAllowed
   };
 
   area = undefined
@@ -165,17 +165,16 @@ function sendArea(area) {
   mavros.setFence(payload,frontendId)
 }
 function addArea(){
-  let area=makeArea();
+  let area=makeArea(-1,isAllowed());
   if (!area) return;
 
   area.area.setMap(null);
   sendArea(area);
 }
-function addArea2(id){
-  let area=makeArea();
+function addArea2(id,mode){
+  let area=makeArea(id,mode==1);
   if (!area) return;
 
-  area.id=id;
   areas.push(area);
   updateTable();
 }
