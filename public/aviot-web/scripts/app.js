@@ -1,5 +1,5 @@
 var listenerStatus = false
-var latitude, longitude, altitude
+var latitude, longitude, altitude, relative_altitude
 var rtt=0;
 var circleTest=false;
 var rotation=0;
@@ -142,7 +142,8 @@ function onRelAltUpdate(msg){
     //  $('#set-alt').attr('disabled', false)
     //}
   }
-  $('#rel-alt').html(Math.round(msg * 10) / 10)
+  relative_altitude = Math.round(msg * 10) / 10;
+  $('#rel-alt').html(relative_altitude);
 }
 function onCompassUpdate(msg) {
   rotation=msg;
@@ -185,7 +186,8 @@ function armThrottle () {
 }
 function setAlt() {
   console.log('taking off');
-  mavros.takeoff(latitude, longitude, Number($('#altitude').val()))
+  altitude_from_input = Number($('#altitude').val());
+  mavros.takeoff(latitude, longitude, altitude + altitude_from_input + relative_altitude);
 }
 function rttTest() {
   rtt_ts1=Date.now()
