@@ -5,7 +5,8 @@ var circleTest=false;
 var rotation=0;
 var mode=-1;
 var listInterval=null;
-var waypoints,real_waypoints;
+var waypoints=[],waypoints_real=[];
+var waypoints_old=[],waypoints_real_old=[];
 
 /**
  * Events:
@@ -135,10 +136,14 @@ function onGlobalPosUpdate(msg){
 }
 function onWaypoints(msg){
   waypoints=msg.waypoints;
-  refreshWaypoints(waypoints,real_waypoints)
+  if (JSON.stringify(waypoints)!=JSON.stringify(waypoints_old) || JSON.stringify(waypoints_real)!=JSON.stringify(waypoints_real_old)) {
+    waypoints_old=waypoints;
+    waypoints_real_old=waypoints_real;
+    refreshWaypoints(waypoints,waypoints_real)
+  }
 }
 function onWaypointsReal(msg){
-  real_waypoints=msg.waypoints;
+  waypoints_real=msg.waypoints;
 }
 
 function onRelAltUpdate(msg){
