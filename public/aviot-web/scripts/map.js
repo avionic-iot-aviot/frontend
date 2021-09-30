@@ -2,7 +2,7 @@ let map;
 let polygon = []
 let areas = []
 let area
-let poly
+let poly,poly_real
 var allow = true
 var droneMarker = null
 
@@ -91,11 +91,7 @@ function refreshArea(isAllowed){
   });
   area.setMap(map)
 }
-function refreshWaypoints(wp) {
-  if(poly){
-    poly.setMap(null)
-  }
-
+function makePath(wp) {
   const path = [];
   wp.forEach(element => {
     path.push({
@@ -103,14 +99,31 @@ function refreshWaypoints(wp) {
       lng: element.y_long,
     });
   });
+  return path;
+}
+function refreshWaypoints(wp,wp_real) {
+  if (wp_real) {
+    if(poly_real) poly_real.setMap(null)
   
-  poly = new google.maps.Polyline({
-    path,
-    strokeColor: "#FF00FF",
-    strokeOpacity: 1.0,
-    strokeWeight: 3,
-  });
-  poly.setMap(map);
+    poly_real = new google.maps.Polyline({
+      path: makePath(wp_real),
+      strokeColor: "#FF0000",
+      strokeOpacity: 1.0,
+      strokeWeight: 3,
+    });
+    poly_real.setMap(map);
+  }
+  if (wp) {
+    if(poly) poly.setMap(null)
+
+    poly = new google.maps.Polyline({
+      path: makePath(wp),
+      strokeColor: "#FF00FF",
+      strokeOpacity: 1.0,
+      strokeWeight: 3,
+    });
+    poly.setMap(map);
+  }
 }
 function addPolygon(){
   areas.push(polygon)

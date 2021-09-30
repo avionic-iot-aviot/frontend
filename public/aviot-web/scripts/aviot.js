@@ -47,6 +47,7 @@ class AviotCopter {
       this.socket.on(`/${this.fccsId}/global_position/rel_alt`, this.__emit('relative_altitude'))
       this.socket.on(`/${this.fccsId}/global_position/compass_hdg`, this.__emit('compass_hdg'))
       this.socket.on(`/${this.fccsId}/mission/waypoints`, this.__emit('waypoints'))
+      this.socket.on(`/${this.fccsId}/mission/waypoints_real`, this.__emit('waypoints_real'))
       this.socket.on(`/${this.copterId}/streaming`, this.__emit('streaming'))
       this.socket.on(`/${this.copterId}/video_room`, this.__emit('video_room'))
       this.socket.on(`/${this.copterId}/rtt_resp`, this.__emit('rtt_resp'))

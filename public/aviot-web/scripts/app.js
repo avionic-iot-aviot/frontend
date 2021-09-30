@@ -5,6 +5,7 @@ var circleTest=false;
 var rotation=0;
 var mode=-1;
 var listInterval=null;
+var waypoints,real_waypoints;
 
 /**
  * Events:
@@ -36,6 +37,7 @@ mavros.on('global_position', onGlobalPosUpdate)
 mavros.on('relative_altitude', onRelAltUpdate)
 mavros.on('compass_hdg', onCompassUpdate)
 mavros.on('waypoints', onWaypoints)
+mavros.on('waypoints_real', onWaypointsReal)
 mavros.on('error', onError)
 mavros.on('streaming', onStreaming)
 mavros.on('video_room', onVideoRoom)
@@ -132,9 +134,11 @@ function onGlobalPosUpdate(msg){
   updateDronePos(latitude,longitude,getQueryVariable('copter_id'),true,rotation)
 }
 function onWaypoints(msg){
-  refreshWaypoints(msg.waypoints)
-  console.log("----------------#################")
-  console.log(msg)
+  waypoints=msg.waypoints;
+  refreshWaypoints(waypoints,real_waypoints)
+}
+function onWaypointsReal(msg){
+  real_waypoints=msg.waypoints;
 }
 
 function onRelAltUpdate(msg){
