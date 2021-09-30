@@ -187,3 +187,8 @@ function reset(){
   areas=[];
   updateTable();
 }
+
+function allowedChanged() {
+  if (polygon.length==0) return null;
+  refreshArea(isAllowed())
+}

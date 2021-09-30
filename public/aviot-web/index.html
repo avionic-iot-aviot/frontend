@@ -100,7 +100,7 @@
           <button class="btn btn-warning" onclick="removeMarkers()">REMOVE MARKERS</button>
           <button class="btn btn-success" onclick="addArea()">ADD AREA</button>
           <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="" id="allow-area" checked>
+            <input class="form-check-input" oninput="allowedChanged()" type="checkbox" value="" id="allow-area" checked>
             <label class="form-check-label" for="allow-area">
               Allowed area
             </label>
