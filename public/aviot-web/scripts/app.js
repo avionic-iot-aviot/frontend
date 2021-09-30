@@ -35,6 +35,7 @@ mavros.on('battery', updateBatteryInfo)
 mavros.on('global_position', onGlobalPosUpdate)
 mavros.on('relative_altitude', onRelAltUpdate)
 mavros.on('compass_hdg', onCompassUpdate)
+mavros.on('waypoints', onWaypoints)
 mavros.on('error', onError)
 mavros.on('streaming', onStreaming)
 mavros.on('video_room', onVideoRoom)
@@ -129,6 +130,11 @@ function onGlobalPosUpdate(msg){
   $('#lng').html(longitude)
   $('#alt').html(Math.round(altitude * 10) / 10)
   updateDronePos(latitude,longitude,getQueryVariable('copter_id'),true,rotation)
+}
+function onWaypoints(msg){
+  refreshWaypoints(msg.waypoints)
+  console.log("----------------#################")
+  console.log(msg)
 }
 
 function onRelAltUpdate(msg){

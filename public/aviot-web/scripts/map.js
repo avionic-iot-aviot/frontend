@@ -2,6 +2,7 @@ let map;
 let polygon = []
 let areas = []
 let area
+let poly
 var allow = true
 var droneMarker = null
 
@@ -90,6 +91,27 @@ function refreshArea(isAllowed){
   });
   area.setMap(map)
 }
+function refreshWaypoints(wp) {
+  if(poly){
+    poly.setMap(null)
+  }
+
+  const path = [];
+  wp.forEach(element => {
+    path.push({
+      lat: element.x_lat,
+      lng: element.y_long,
+    });
+  });
+  
+  poly = new google.maps.Polyline({
+    path,
+    strokeColor: "#FF00FF",
+    strokeOpacity: 1.0,
+    strokeWeight: 3,
+  });
+  poly.setMap(map);
+}
 function addPolygon(){
   areas.push(polygon)
 }
@@ -170,6 +192,26 @@ function addArea(){
 
   area.area.setMap(null);
   sendArea(area);
+}
+function addWaypoints(){
+  let area=makeArea(-1,isAllowed());
+  if (!area) return;
+
+  area.area.setMap(null);
+
+  let waypoints=[];
+  area.polygon.forEach(m => {
+    waypoints.push({
+      lat: m.position.lat(),
+      lng: m.position.lng(),
+      alt: altitude,
+    });
+  });
+
+  let payload = {
+    waypoints
+  }
+  mavros.missionPush(payload,frontendId)
 }
 function addArea2(id,mode){
   let area=makeArea(id,mode==1);
