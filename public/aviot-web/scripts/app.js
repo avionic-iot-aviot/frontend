@@ -132,7 +132,7 @@ function onGlobalPosUpdate(msg){
   $('#lat').html(latitude)
   $('#lng').html(longitude)
   $('#alt').html(Math.round(altitude * 10) / 10)
-  updateDronePos(latitude,longitude,getQueryVariable('copter_id'),true,rotation)
+  updateDronePos(latitude,longitude,getQueryVariable('copter_id'),isFollowing(),rotation)
 }
 function onWaypoints(msg){
   waypoints=msg.waypoints;

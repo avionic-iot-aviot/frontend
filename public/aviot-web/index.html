@@ -99,11 +99,17 @@
           <button class="btn btn-warning" onclick="reset()">RESET</button>
           <button class="btn btn-warning" onclick="removeMarkers()">REMOVE MARKERS</button>
           <button class="btn btn-success" onclick="addArea()">ADD AREA</button>
-          <button class="btn btn-success" onclick="addWaypoints()">ADD WAYPOINTS</button>
+          <button class="btn btn-success" onclick="addWaypoints()">EXECUTE MISSION</button>
           <div class="form-check">
             <input class="form-check-input" oninput="allowedChanged()" type="checkbox" value="" id="allow-area" checked>
             <label class="form-check-label" for="allow-area">
               Allowed area
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="follow-drone" checked>
+            <label class="form-check-label" for="follow-drone">
+              Follow drone
             </label>
           </div>
         </div>

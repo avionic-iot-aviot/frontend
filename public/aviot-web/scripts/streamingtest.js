@@ -339,6 +339,7 @@ function updateStreamsList() {
         $('#streamslist a').unbind('click').click(function () {
           selectedStream = $(this).attr("id");
           $('#streamset').html($(this).html()).parent().removeClass('open');
+          $('#streamslist').removeClass('show');
           return false;
 
         });

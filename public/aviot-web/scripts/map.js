@@ -31,6 +31,9 @@ function initMap() {
 function isAllowed(){
   return $('#allow-area:checked').length
 }
+function isFollowing(){
+  return $('#follow-drone:checked').length
+}
 
 function addMarker(lat,lng) {
   let marker = new google.maps.Marker({
