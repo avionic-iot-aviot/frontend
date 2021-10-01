@@ -1,3 +1,5 @@
+//const { createCommonHandlers } = require("vee-validate/dist/types/components/common");
+
 var listenerStatus = false
 var latitude, longitude, altitude, relative_altitude
 var rtt=0;
@@ -204,6 +206,30 @@ function setAlt() {
   altitude_from_input = Number($('#altitude').val());
   mavros.takeoff(latitude, longitude, altitude + altitude_from_input);
 }
+function servoSend() {
+  console.log('servo send');
+  command_string = $('#servo-cmd').val();
+
+  args=command_string.split(" ")
+  if (args.length!=2) {
+    alert("Wrong number of arguments")
+    return;
+  }
+
+  number=Number(args[0])
+  if (number!=3 && number!=5 && number!=7) {
+    alert("Wrong servo number")
+    return;
+  }
+
+  command=args[1].toLowerCase();
+  if (command!="open" && command!="close") {
+    alert("Wrong command")
+    return;
+  }
+
+  mavros.servo(number,command);
+}
 function rttTest() {
   rtt_ts1=Date.now()
   console.log('rtt_test: '+rtt_ts1);
@@ -272,6 +298,7 @@ $('#armThrottle').click(armThrottle)
 $('#set-alt').click(setAlt)
 $('#land').click(land)
 $('#change-mode').click(changeMode)
+$('#servo-send').click(servoSend)
 
 
 document.addEventListener('keydown',press)

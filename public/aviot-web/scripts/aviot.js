@@ -64,6 +64,10 @@ class AviotCopter {
     land(lat, lng, alt){
       this.socket.emit('land', {copterId: this.fccsId, latitude: lat, longitude: lng, altitude: alt} )
     }
+    servo(number, command) {
+      console.log('sending servo command');
+      this.socket.emit('servo', {copterId: this.copterId, action: command, data: { number }})
+    }
     cmdVel(linear={x:0, y:0, z:0}, angular={x:0, y:0, z:0}){
       this.socket.emit('cmd_vel', {copterId: this.fccsId, linear: linear, angular: angular})
     }
