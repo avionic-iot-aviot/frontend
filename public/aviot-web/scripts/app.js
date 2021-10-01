@@ -220,7 +220,7 @@ function changeMode(){
 
 function startStreaming(){
   mavros.startStreaming()
-  $('#streaming').html('STOP STREAMING')
+  $('#streaming').html('STOP VIDEO STREAMING')
   $('#streaming').attr('onclick', 'stopStreaming()')
   $('#streaming').attr('class', 'btn btn-warning')
 
@@ -228,7 +228,7 @@ function startStreaming(){
 function stopStreaming(){
   stopJanusStream();
   mavros.stopStreaming()
-  $('#streaming').html('START STREAMING')
+  $('#streaming').html('START VIDEO STREAMING')
   $('#streaming').attr('onclick', 'startStreaming()')
   $('#streaming').attr('class', 'btn btn-success')
 

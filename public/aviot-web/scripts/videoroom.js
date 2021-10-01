@@ -404,6 +404,7 @@ function unpublishOwnFeed() {
   sfutest.send({ message: unpublish });
   $('#videolocal').html('');
   $('#videoremote-container').html('');
+  $('#remote1').removeClass('hide').html("Remote video").show();
 }
 
 // Helpers to create Simulcast-related UI, if enabled
