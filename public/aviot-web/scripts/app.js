@@ -136,7 +136,7 @@ function onGlobalPosUpdate(msg){
 }
 function onWaypoints(msg){
   waypoints=msg.waypoints;
-  if (JSON.stringify(waypoints)!=JSON.stringify(waypoints_old) || JSON.stringify(waypoints_real)!=JSON.stringify(waypoints_real_old)) {
+  if (!_.isEqual(waypoints,waypoints_old) || !_.isEqual(waypoints_real,waypoints_real_old)) {
     waypoints_old=waypoints;
     waypoints_real_old=waypoints_real;
     refreshWaypoints(waypoints,waypoints_real)

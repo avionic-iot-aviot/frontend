@@ -91,9 +91,10 @@ function refreshArea(isAllowed){
   });
   area.setMap(map)
 }
-function makePath(wp) {
+function makePath(wp,skipFirst) {
   const path = [];
-  wp.forEach(element => {
+  wp.forEach((element, index) => {
+    if (skipFirst && index==0) return;
     path.push({
       lat: element.x_lat,
       lng: element.y_long,
@@ -106,7 +107,7 @@ function refreshWaypoints(wp,wp_real) {
     if(poly_real) poly_real.setMap(null)
   
     poly_real = new google.maps.Polyline({
-      path: makePath(wp_real),
+      path: makePath(wp_real,true),
       strokeColor: "#FF0000",
       strokeOpacity: 1.0,
       strokeWeight: 3,
@@ -117,7 +118,7 @@ function refreshWaypoints(wp,wp_real) {
     if(poly) poly.setMap(null)
 
     poly = new google.maps.Polyline({
-      path: makePath(wp),
+      path: makePath(wp,false),
       strokeColor: "#FF00FF",
       strokeOpacity: 1.0,
       strokeWeight: 3,
