@@ -12,4 +12,4 @@ do
 
 done
 
-http-server dist
+http-server dist -c -1
