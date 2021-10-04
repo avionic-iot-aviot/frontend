@@ -101,12 +101,15 @@ function onFence(msg){
     doListFence();
   }
   else if (msg.action=="get") {
-    clearMap();
+    let ids=areas.map((a)=>a.id);
+    if (!ids.includes(msg.data.fenceId)) {
+      clearMap();
 
-    msg.res.points.forEach((p, index) => {
-      addMarker(p.x,p.y);
-    });
-    addArea2(msg.data.fenceId,msg.res.mode);
+      msg.res.points.forEach((p, index) => {
+        addMarker(p.x,p.y);
+      });
+      addArea2(msg.data.fenceId,msg.res.mode);
+    }
   }
   else if (msg.action=="list") {
     // remove areas that are not present in the fence list
