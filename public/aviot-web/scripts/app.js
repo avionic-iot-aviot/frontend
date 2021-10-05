@@ -41,6 +41,7 @@ mavros.on('relative_altitude', onRelAltUpdate)
 mavros.on('compass_hdg', onCompassUpdate)
 mavros.on('waypoints', onWaypoints)
 mavros.on('waypoints_real', onWaypointsReal)
+mavros.on('volume', onVolume)
 mavros.on('error', onError)
 mavros.on('streaming', onStreaming)
 mavros.on('video_room', onVideoRoom)
@@ -149,6 +150,10 @@ function onWaypoints(msg){
 }
 function onWaypointsReal(msg){
   waypoints_real=msg.waypoints;
+}
+function onVolume(msg){
+  $('#volume-label').html(msg)
+  $('#volume').attr("value",msg)
 }
 
 function onRelAltUpdate(msg){
@@ -276,6 +281,9 @@ function stopVideoRoom(){
   $('#videoroom').html('START VIDEO ROOM')
   $('#videoroom').attr('onclick', 'startVideoRoom()')
   $('#videoroom').attr('class', 'btn btn-success')
+}
+function volumeChange(value){
+  mavros.setVolume(value)
 }
 function circleStart(){
   circleTest=true;

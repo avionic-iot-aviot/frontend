@@ -52,6 +52,11 @@
             <button class="btn btn-success align-middle" id="set-alt">SET ALTITUDE</button>
           </div>
           <div class="form-group">
+            <label class="align-middle custom-label">Volume</label>
+            <input id="volume" class="form-control half-size align-middle" onchange="volumeChange(this.value)" type="range" min=1 max=50 value="50"></input>
+            <label id="volume-label" class="align-middle custom-label"></label>
+          </div>
+          <div class="form-group">
             <label class="align-middle custom-label">Servo commands</label>
             <input id="servo-cmd" class="form-control half-size align-middle" type="text"></input>
             <button class="btn btn-success align-middle" id="servo-send">SEND</button>

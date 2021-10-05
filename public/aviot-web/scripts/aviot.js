@@ -48,6 +48,7 @@ class AviotCopter {
       this.socket.on(`/${this.fccsId}/global_position/compass_hdg`, this.__emit('compass_hdg'))
       this.socket.on(`/${this.fccsId}/mission/waypoints`, this.__emit('waypoints'))
       this.socket.on(`/${this.fccsId}/mission/waypoints_real`, this.__emit('waypoints_real'))
+      this.socket.on(`/${this.copterId}/volume`, this.__emit('volume'))
       this.socket.on(`/${this.copterId}/streaming`, this.__emit('streaming'))
       this.socket.on(`/${this.copterId}/video_room`, this.__emit('video_room'))
       this.socket.on(`/${this.copterId}/rtt_resp`, this.__emit('rtt_resp'))
@@ -90,6 +91,10 @@ class AviotCopter {
     stopVideoRoom(){
       console.log("Sending stop video room")
       this.socket.emit('video_room', {copterId: this.copterId, action: 'stop'})
+    }
+    setVolume(volume){
+      console.log("Sending volume")
+      this.socket.emit('volume', {copterId: this.copterId, data: { volume }})
     }
     streamRate(stream_id, message_rate, on_off){
       console.log("Sending stream rate")
