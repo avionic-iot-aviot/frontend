@@ -26,6 +26,10 @@
     margin-right: 8px;
     width: 80px;
   }
+  #controller {
+    width: 100%;
+    height: 400px;
+  }
 </style>
 
 <body>
@@ -53,7 +57,7 @@
           </div>
           <div class="form-group">
             <label class="align-middle custom-label">Volume</label>
-            <input id="volume" class="form-control half-size align-middle" onchange="volumeChange(this.value)" type="range" min=1 max=50 value="50"></input>
+            <input id="volume" class="form-control half-size align-middle" onmousedown="volumeModify()" onchange="volumeChange(this.value)" type="range" min=1 max=50 value="50"></input>
             <label id="volume-label" class="align-middle custom-label"></label>
           </div>
           <div class="form-group">
@@ -211,6 +215,9 @@
     </div>
   </div>
 
+
+
+  
   <script src="lodash.js"></script>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.4/socket.io.min.js"></script>
   <script type="text/javascript"
@@ -241,6 +248,13 @@
     script.setAttribute("async", "");
     script.setAttribute("src", `https://maps.googleapis.com/maps/api/js?key=${getQueryVariable('maps_api_key')}&callback=initMap&libraries=&v=weekly`);
     document.head.appendChild(script);
+  </script>
+  <script>
+    const controller_frame = document.createElement('iframe');
+    controller_frame.setAttribute("id", "controller");
+    controller_frame.setAttribute("frameborder", "1");
+    controller_frame.setAttribute("src", `../controller/index.html?controller_url=${getQueryVariable('controller_url')}`);
+    document.body.appendChild(controller_frame);
   </script>
   <script src="scripts/app.js"></script>
 

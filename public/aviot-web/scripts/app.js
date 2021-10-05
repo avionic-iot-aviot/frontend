@@ -9,6 +9,7 @@ var mode=-1;
 var listInterval=null;
 var waypoints=[],waypoints_real=[];
 var waypoints_old=[],waypoints_real_old=[];
+var modifying_volume=false;
 
 /**
  * Events:
@@ -152,8 +153,10 @@ function onWaypointsReal(msg){
   waypoints_real=msg.waypoints;
 }
 function onVolume(msg){
+  if (modifying_volume) return;
   $('#volume-label').html(msg)
-  $('#volume').attr("value",msg)
+  //$('#volume').attr("value",msg)
+  $('#volume').val(msg)
 }
 
 function onRelAltUpdate(msg){
@@ -284,6 +287,10 @@ function stopVideoRoom(){
 }
 function volumeChange(value){
   mavros.setVolume(value)
+  modifying_volume=false;
+}
+function volumeModify(){
+  modifying_volume=true;
 }
 function circleStart(){
   circleTest=true;
