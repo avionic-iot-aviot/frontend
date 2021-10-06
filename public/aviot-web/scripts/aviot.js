@@ -114,6 +114,10 @@ class AviotCopter {
       console.log("Sending mission clear event")
       this.socket.emit('mission', { copterId: this.fccsId, action: 'clear', data: { ...data, frontendId } })
     }
+    returnToHome(data, frontendId){
+      console.log("Sending return to home event")
+      this.socket.emit('mission', { copterId: this.fccsId, action: 'return', data: { ...data, frontendId } })
+    }
     setFence(data, frontendId){
       console.log("Sending set fence event")
       this.socket.emit('fence', { copterId: this.fccsId, action: 'set', data: { ...data, frontendId } })

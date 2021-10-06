@@ -253,6 +253,9 @@ function addWaypoints(){
 function missionClear() {
   mavros.missionClear({},frontendId)
 }
+function returnToHome() {
+  mavros.returnToHome({},frontendId)
+}
 function addArea2(id,mode){
   let area=makeArea(id,mode==1);
   if (!area) return;
