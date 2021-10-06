@@ -46,6 +46,7 @@ class AviotCopter {
       this.socket.on(`/${this.fccsId}/global_position/global`, this.__emit('global_position'))
       this.socket.on(`/${this.fccsId}/global_position/rel_alt`, this.__emit('relative_altitude'))
       this.socket.on(`/${this.fccsId}/global_position/compass_hdg`, this.__emit('compass_hdg'))
+      this.socket.on(`/${this.fccsId}/home_position`, this.__emit('home_position'))
       this.socket.on(`/${this.fccsId}/mission/waypoints`, this.__emit('waypoints'))
       this.socket.on(`/${this.fccsId}/mission/waypoints_real`, this.__emit('waypoints_real'))
       this.socket.on(`/${this.copterId}/volume`, this.__emit('volume'))

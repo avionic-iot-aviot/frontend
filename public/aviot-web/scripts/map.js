@@ -5,6 +5,7 @@ let area
 let poly,poly_real
 var allow = true
 var droneMarker = null
+var homeMarker = null
 
 
 var colors = {
@@ -79,6 +80,25 @@ function updateDronePos(lat, lng, droneId, center, rotation){
 
   droneMarker.setPosition(new google.maps.LatLng(lat, lng))
   center && setCenter(lat, lng)
+}
+function updateHomePos(lat, lng){
+  if(homeMarker === null) {
+    homeMarker = new google.maps.Marker({
+      position: {
+        lat: lat,
+        lng: lng
+      },
+      draggable: false,
+      map,
+      title: "Home",
+      icon: {
+        path: google.maps.SymbolPath.CIRCLE,
+        scale: 7,
+      }
+    })
+  }
+  
+  homeMarker.setPosition(new google.maps.LatLng(lat, lng))
 }
 function setCenter(lat, lng){
   map.setCenter(new google.maps.LatLng(lat, lng))

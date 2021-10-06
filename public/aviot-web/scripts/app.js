@@ -2,6 +2,7 @@
 
 var listenerStatus = false
 var latitude, longitude, altitude, relative_altitude
+var h_lat, h_lng, h_alt;
 var rtt=0;
 var circleTest=false;
 var rotation=0;
@@ -28,7 +29,7 @@ mavros.on('connect', function(){
   console.log('connected')
   $('#video').append('<video class="rounded centered" id="remotevideo" width="100%" height="100%" autoplay playsinline/>')
   setTimeout(() => {
-    mavros.streamRate(0,1,true);
+    mavros.streamRate(0,10,true);
     doListFence();
   }, 2000);
   setInterval(() => {
@@ -40,6 +41,7 @@ mavros.on('battery', updateBatteryInfo)
 mavros.on('global_position', onGlobalPosUpdate)
 mavros.on('relative_altitude', onRelAltUpdate)
 mavros.on('compass_hdg', onCompassUpdate)
+mavros.on('home_position', onHomePosUpdate)
 mavros.on('waypoints', onWaypoints)
 mavros.on('waypoints_real', onWaypointsReal)
 mavros.on('volume', onVolume)
@@ -140,6 +142,12 @@ function onGlobalPosUpdate(msg){
   $('#lng').html(longitude)
   $('#alt').html(Math.round(altitude * 10) / 10)
   updateDronePos(latitude,longitude,getQueryVariable('copter_id'),isFollowing(),rotation)
+}
+function onHomePosUpdate(msg){
+  h_lat = msg.geo.latitude
+  h_lng = msg.geo.longitude
+  h_alt = msg.geo.altitude
+  updateHomePos(h_lat,h_lng)
 }
 function onWaypoints(msg){
   waypoints=msg.waypoints;
